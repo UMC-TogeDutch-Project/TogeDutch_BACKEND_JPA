@@ -33,25 +33,34 @@ repositories {
 
 // 프로젝트 개발에 필요한 의존성들을 선언하는 곳
 dependencies {
-    // compile 메소드 안에 라이브러리의 이름의 앞부분만 추가 (Ctrl + space) : 자동완선
-    // buildscript 사용하는 경우 : 특정 버전 명시 X -> 그래야 위에서 명시한 springBootVersion을 따라 감
-    // springBootVersion 명시하지 않은 경우 dependencies에서 특정 버전 명시 가능
-    implementation 'org.springframework.boot:spring-boot-starter-web'
-    implementation 'org.projectlombok:lombok'
-
-    // jpa 관련 의존성 등록
-    // spring-boot-starter-data-jpa : 스프링 부트용 Spring Data Jpa 추상화 라이브러리 (자동으로 버전 관리)
-    // h2 : 인메모리 관계형 데이터베이스
+    implementation 'mysql:mysql-connector-java'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-    implementation 'com.h2database:h2'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
 
-    // SpringBoot 테스트를 위한 의존성 등록
+    // 추가 시작
+    implementation 'org.springframework.boot:spring-boot-starter-web-services'
+    implementation 'commons-io:commons-io:2.11.0'    /* Apache commons-io */
+    implementation group: 'commons-fileupload', name: 'commons-fileupload', version: '1.4'
+    implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
+
+    compileOnly(group: 'io.jsonwebtoken', name: 'jjwt', version: '0.9.1')
+    compileOnly('io.jsonwebtoken:jjwt:0.9.1')
+    implementation group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.5.13'
+
+    implementation 'com.google.code.gson:gson:2.8.7'
+    compileOnly(group: 'io.jsonwebtoken', name: 'jjwt', version: '0.7.0')
+    implementation(group: 'io.jsonwebtoken', name: 'jjwt', version: '0.7.0')
+    implementation('io.jsonwebtoken:jjwt:0.9.0')
+
+    implementation 'org.springframework.boot:spring-boot-starter-websocket'
+    implementation 'org.springframework.boot:spring-boot-starter-mail'
+
+    // 추가 끝
+
+    compileOnly 'org.projectlombok:lombok'
+    runtimeOnly 'com.h2database:h2'
+    annotationProcessor 'org.projectlombok:lombok'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
-
-    // 프로젝트 생성 시 생기는 기본 코드
-    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
-    testImplementation 'junit:junit:4.13.1'
-    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
 }
 
 test {
