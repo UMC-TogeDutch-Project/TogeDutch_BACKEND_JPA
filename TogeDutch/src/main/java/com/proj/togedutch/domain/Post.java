@@ -1,5 +1,6 @@
 package com.proj.togedutch.domain;
 
+import antlr.build.ANTLR;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -55,11 +56,21 @@ public class Post {
     private String category;
 
     @Builder
-    public Post(String title){
+    public Post (String title, String url, int delivery_tips, int minimum,
+                String order_time, int num_of_recruits, int recruited_num, String status,
+                Double latitude, Double longitude, String category, String image, int user_id) {
         this.title = title;
-    }
-    @Builder
-    public Post(int post_id){
-        this.post_id = post_id;
+        this.url = url;
+        this.delivery_tips = delivery_tips;
+        this.minimum = minimum;
+        this.order_time = order_time;
+        this.num_of_recruits = num_of_recruits;
+        this.recruited_num = recruited_num;
+        this.status = status;
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.category = category;
+        this.image = image;
+        this.user_id = user_id;
     }
 }

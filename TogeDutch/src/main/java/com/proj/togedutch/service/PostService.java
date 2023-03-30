@@ -20,4 +20,24 @@ public class PostService {
     public List<Post> findAll() {
         return postRepository.findAll();
     }
+
+    public Post createPost(Post post, String fileUrl, int userIdx){
+        Post newPost = Post.builder()
+                .title(post.getTitle())
+                .url(post.getUrl())
+                .delivery_tips(post.getDelivery_tips())
+                .minimum(post.getMinimum())
+                .order_time(post.getOrder_time())
+                .num_of_recruits(post.getNum_of_recruits())
+                .recruited_num(post.getRecruited_num())
+                .status(post.getStatus())
+                .latitude(post.getLatitude())
+                .longitude(post.getLongitude())
+                .category(post.getCategory())
+                .image(post.getImage())
+                .user_id(userIdx)
+                .build();
+
+        return postRepository.save(newPost);
+    }
 }
