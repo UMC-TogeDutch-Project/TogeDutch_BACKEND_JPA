@@ -7,6 +7,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import static com.proj.togedutch.config.BaseResponseStatus.DATABASE_ERROR;
 
@@ -25,11 +28,11 @@ public class PostService {
         Post newPost = Post.builder()
                 .title(post.getTitle())
                 .url(post.getUrl())
-                .delivery_tips(post.getDelivery_tips())
+                .delivery_tips(post.getDeliveryTips())
                 .minimum(post.getMinimum())
-                .order_time(post.getOrder_time())
-                .num_of_recruits(post.getNum_of_recruits())
-                .recruited_num(post.getRecruited_num())
+                .order_time(post.getOrderTime())
+                .num_of_recruits(post.getNumOfRecruits())
+                .recruited_num(post.getRecruitedNum())
                 .status(post.getStatus())
                 .latitude(post.getLatitude())
                 .longitude(post.getLongitude())
@@ -39,5 +42,19 @@ public class PostService {
                 .build();
 
         return postRepository.save(newPost);
+    }
+
+    public List<Post> getSortingPosts(String sort){
+        List<String> status = new ArrayList<>();
+        status.add("모집완료");
+        status.add("시간만료");
+        status.add("공고사용불가");
+
+        //postRepository.timezoneSetting();
+
+        if(sort.equals("latest"))   // 최신순
+            return postRepository.findByStatusNotInOrderByCreatedAtDesc(status);
+        else                        // 주문 임박
+            return postRepository.findByOrderImminent(status);
     }
 }

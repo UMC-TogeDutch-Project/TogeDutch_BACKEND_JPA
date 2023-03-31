@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -43,13 +44,13 @@ public class PostController {
         if (post.getUrl() == null) {
             return new BaseResponse<>(BaseResponseStatus.POST_POST_EMPTY_URL);
         }
-        if (Integer.valueOf(post.getDelivery_tips()) == null) {
+        if (Integer.valueOf(post.getDeliveryTips()) == null) {
             return new BaseResponse<>(BaseResponseStatus.POST_POST_EMPTY_TIP);
         }
         if (Integer.valueOf(post.getMinimum()) == null) {
             return new BaseResponse<>(BaseResponseStatus.POST_POST_EMPTY_MINIMUM);
         }
-        if (Integer.valueOf(post.getNum_of_recruits()) == null) {
+        if (Integer.valueOf(post.getNumOfRecruits()) == null) {
             return new BaseResponse<>(BaseResponseStatus.POST_POST_EMPTY_RECRUIT);
         }
         if (post.getLatitude() == null || post.getLongitude() == null) {
@@ -73,5 +74,12 @@ public class PostController {
         // Post modifyPost = postService.insertChatRoom(newPost.getPost_id(), newChatRoom.getChatRoomIdx());
         //return new BaseResponse<>(modifyPost);
         return new BaseResponse<>(createPost);
+    }
+
+    // 공고 전체 조회 (최신순 / 주문임박)
+    @GetMapping("/")
+    public BaseResponse<List<Post>> getSortingPosts(@RequestParam String sort) throws BaseException {
+        List<Post> getPostsRes = postService.getSortingPosts(sort);
+        return new BaseResponse<>(getPostsRes);
     }
 }
