@@ -17,29 +17,29 @@ import java.sql.Timestamp;
 public class Post {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int post_id;
+    private int postIdx;
     @Column(name="title")
     private String title;
     @Column(name="url")
     private String url;
     @Column(name="delivery_tips")
-    private int delivery_tips;
+    private int deliveryTips;
     @Column(name="minimum")
     private int minimum;
     @Column(name="order_time")
-    private String order_time;
+    private String orderTime;
     @Column(name="num_of_recruits")
-    private int num_of_recruits;
+    private int numOfRecruits;
     @Column(name="recruited_num")
-    private int recruited_num;
+    private int recruitedNum;
     @Column(name="status")
     private String status;
     @Column(name="created_at")
-    private Timestamp created_at;
+    private Timestamp createdAt;
     @Column(name="updated_at")
-    private Timestamp updated_at;
+    private Timestamp updatedAt;
     @Column(name="User_user_id")
-    private int user_id;
+    private int userIdx;
     @Column(name="image")
     private String image;
     @Column(name="latitude")
@@ -51,7 +51,7 @@ public class Post {
     // DB에서 not null 지정이 안되어 있는 칼럼의 속성 타입이 primitive type으로 지정
     // int -> integer로 타입 변경
     @Column(name="ChatRoom_chatRoom_id")
-    private Integer chatRoom_id;
+    private Integer chatRoomIdx;
     @Column(name="category")
     private String category;
 
@@ -61,16 +61,16 @@ public class Post {
                 Double latitude, Double longitude, String category, String image, int user_id) {
         this.title = title;
         this.url = url;
-        this.delivery_tips = delivery_tips;
+        this.deliveryTips = delivery_tips;
         this.minimum = minimum;
-        this.order_time = order_time;
-        this.num_of_recruits = num_of_recruits;
-        this.recruited_num = recruited_num;
+        this.orderTime = order_time;
+        this.numOfRecruits = num_of_recruits;
+        this.recruitedNum = recruited_num;
         this.status = status;
         this.latitude = latitude;
         this.longitude = longitude;
         this.category = category;
         this.image = image;
-        this.user_id = user_id;
+        this.userIdx = user_id;
     }
 }
