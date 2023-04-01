@@ -17,6 +17,7 @@ import java.sql.Timestamp;
 public class Post {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name="post_id")
     private int postIdx;
     @Column(name="title")
     private String title;
