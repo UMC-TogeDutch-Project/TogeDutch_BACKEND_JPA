@@ -9,9 +9,9 @@ import java.util.List;
 
 @Repository
 public interface PostRepository extends JpaRepository<Post, Integer> {
-    /*@Query("SET time_zone = 'Asia/Seoul'")
+    @Query(nativeQuery = true, value = "SET time_zone = 'Asia/Seoul'")
     void timezoneSetting();
-*/
+
     // 최신순 조회
     List<Post> findByStatusNotInOrderByCreatedAtDesc(List<String> status);
 
