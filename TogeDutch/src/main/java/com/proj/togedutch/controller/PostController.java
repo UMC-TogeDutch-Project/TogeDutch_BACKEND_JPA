@@ -82,4 +82,13 @@ public class PostController {
         List<Post> getPostsRes = postService.getSortingPosts(sort);
         return new BaseResponse<>(getPostsRes);
     }
+
+    // 공고 특정 조회 (Post API 5 : 로그인 전과 로그인 후의 화면 버튼 달라짐)
+    @GetMapping("/{postIdx}")
+    public BaseResponse<Post> getPostByUserId(@PathVariable("postIdx") int postIdx, @RequestParam int user) throws BaseException {
+        Post getPost = postService.getPostByUserId(postIdx, user);
+        if(getPost == null)
+            return new BaseResponse<>(BaseResponseStatus.NOT_FOUND_POST);
+        return new BaseResponse<>(getPost);
+    }
 }

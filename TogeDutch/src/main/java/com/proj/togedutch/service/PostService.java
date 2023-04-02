@@ -3,18 +3,19 @@ package com.proj.togedutch.service;
 import com.proj.togedutch.config.BaseException;
 import com.proj.togedutch.domain.Post;
 import com.proj.togedutch.repository.PostRepository;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.NoResultException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import static com.proj.togedutch.config.BaseResponseStatus.DATABASE_ERROR;
+import static com.proj.togedutch.config.BaseResponseStatus.NOT_FOUND_POST;
 
 @Service
-@Transactional
 public class PostService {
     @Autowired
     private PostRepository postRepository;
@@ -24,6 +25,7 @@ public class PostService {
         return postRepository.findAll();
     }
 
+    @Transactional(rollbackFor = SQLException.class)
     public Post createPost(Post post, String fileUrl, int userIdx){
         Post newPost = Post.builder()
                 .title(post.getTitle())
@@ -50,11 +52,15 @@ public class PostService {
         status.add("시간만료");
         status.add("공고사용불가");
 
-        //postRepository.timezoneSetting();
+        postRepository.timezoneSetting();
 
         if(sort.equals("latest"))   // 최신순
             return postRepository.findByStatusNotInOrderByCreatedAtDesc(status);
         else                        // 주문 임박
             return postRepository.findByOrderImminent(status);
+    }
+
+    public Post getPostByUserId(int postIdx, int userIdx) throws BaseException {
+        return postRepository.findByPostIdxAndUserIdx(postIdx, userIdx);
     }
 }
