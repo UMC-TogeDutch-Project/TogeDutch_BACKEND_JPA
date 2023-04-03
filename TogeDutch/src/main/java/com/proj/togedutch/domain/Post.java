@@ -1,10 +1,7 @@
 package com.proj.togedutch.domain;
 
 import antlr.build.ANTLR;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
@@ -14,6 +11,7 @@ import java.sql.Timestamp;
 @AllArgsConstructor
 @Table(name="Post")
 @Entity
+@ToString
 public class Post {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -57,9 +55,10 @@ public class Post {
     private String category;
 
     @Builder
-    public Post (String title, String url, int delivery_tips, int minimum,
+    public Post (int post_id, String title, String url, int delivery_tips, int minimum,
                 String order_time, int num_of_recruits, int recruited_num, String status,
                 Double latitude, Double longitude, String category, String image, int user_id) {
+        this.postIdx = post_id;
         this.title = title;
         this.url = url;
         this.deliveryTips = delivery_tips;

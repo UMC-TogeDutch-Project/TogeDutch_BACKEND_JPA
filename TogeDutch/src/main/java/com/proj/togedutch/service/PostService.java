@@ -63,4 +63,32 @@ public class PostService {
     public Post getPostByUserId(int postIdx, int userIdx) throws BaseException {
         return postRepository.findByPostIdxAndUserIdx(postIdx, userIdx);
     }
+
+    public String getImageUrl(int postIdx){
+        Post getPost = postRepository.findByPostIdx(postIdx);
+        return getPost.getImage();
+    }
+
+    public Post modifyPost(int postIdx, Post post, int userIdx, String fileUrl){
+        System.out.println("order_time은 " + post.getOrderTime());
+
+        Post modifyPost = Post.builder()
+                .post_id(postIdx)
+                .title(post.getTitle())
+                .url(post.getUrl())
+                .delivery_tips(post.getDeliveryTips())
+                .minimum(post.getMinimum())
+                .order_time(post.getOrderTime())
+                .num_of_recruits(post.getNumOfRecruits())
+                .recruited_num(post.getRecruitedNum())
+                .status(post.getStatus())
+                .latitude(post.getLatitude())
+                .longitude(post.getLongitude())
+                .category(post.getCategory())
+                .image(fileUrl)
+                .user_id(userIdx)
+                .build();
+
+        return postRepository.save(modifyPost);
+    }
 }

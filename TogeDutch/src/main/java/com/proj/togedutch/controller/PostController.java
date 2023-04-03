@@ -91,4 +91,48 @@ public class PostController {
             return new BaseResponse<>(BaseResponseStatus.NOT_FOUND_POST);
         return new BaseResponse<>(getPost);
     }
+
+    // 공고 수정
+    @PutMapping("/{postIdx}")
+    public BaseResponse<Post> modifyPost(@PathVariable("postIdx") int postIdx, @RequestPart Post post,
+                                         @RequestParam int user, @RequestPart MultipartFile file) throws Exception {
+        logger.info(post.toString());
+        if (post.getTitle() == null) {
+            return new BaseResponse<>(BaseResponseStatus.POST_POST_EMPTY_TITLE);
+        }
+        if (post.getUrl() == null) {
+            return new BaseResponse<>(BaseResponseStatus.POST_POST_EMPTY_URL);
+        }
+        if (Integer.valueOf(post.getDeliveryTips()) == null) {
+            return new BaseResponse<>(BaseResponseStatus.POST_POST_EMPTY_TIP);
+        }
+        if (Integer.valueOf(post.getMinimum()) == null) {
+            return new BaseResponse<>(BaseResponseStatus.POST_POST_EMPTY_MINIMUM);
+        }
+        if (Integer.valueOf(post.getNumOfRecruits()) == null) {
+            return new BaseResponse<>(BaseResponseStatus.POST_POST_EMPTY_RECRUIT);
+        }
+        if (post.getLatitude() == null || post.getLongitude() == null) {
+            return new BaseResponse<>(BaseResponseStatus.POST_POST_EMPTY_LOCATION);
+        }
+        if(post.getCategory() == null){
+            return new BaseResponse<>(BaseResponseStatus.POST_POST_EMPTY_CATEGORY);
+        }
+
+        String fileUrl = postService.getImageUrl(postIdx);
+        if(fileUrl != null) {           // 기존에 서버에 등록된 이미지 삭제
+            String[] url = fileUrl.split("/");
+            logger.info("Delete Image start");
+            awsS3Service.deleteImage(url[3]); // https:~ 경로 빼고 파일명으로 삭제
+        }
+
+        // 이미지 파일이 있으면 서버에 등록
+        if(!file.isEmpty())
+            fileUrl = url + awsS3Service.uploadFile(file, post, user);
+
+        // 공고 내용 수정
+        Post modifyPost = postService.modifyPost(postIdx, post, user, fileUrl);
+        logger.info("Modify success");
+        return new BaseResponse<>(modifyPost);
+    }
 }

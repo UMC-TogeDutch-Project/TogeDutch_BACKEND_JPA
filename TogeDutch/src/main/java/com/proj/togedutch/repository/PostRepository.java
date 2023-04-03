@@ -23,4 +23,7 @@ public interface PostRepository extends JpaRepository<Post, Integer> {
 
     // 공고 특정 조회 (Post API 5번)
     Post findByPostIdxAndUserIdx(int postIdx, int userIdx);
+
+    // 공고 특정 조회 (Post API 11번)
+    Post findByPostIdx(int postIdx);
 }
