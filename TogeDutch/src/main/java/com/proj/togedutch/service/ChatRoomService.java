@@ -17,7 +17,9 @@ public class ChatRoomService {
     private final ChatRoomRepository chatRoomRepository;
 
     public ChatRoomDto createChatRoom(){
-        return new ChatRoomDto (chatRoomRepository.save(new ChatRoomDto().toEntity()));
+        int chatRoomIdx = (chatRoomRepository.save(new ChatRoomDto().toEntity())).getChatRoomIdx();
+        return new ChatRoomDto(chatRoomRepository.findById(chatRoomIdx)
+                .orElseThrow(()-> new IllegalArgumentException("해당 채팅방이 만들어지지 않았습니다.")));
     }
 
     public List<ChatRoomDto> getAllChatRooms() {
