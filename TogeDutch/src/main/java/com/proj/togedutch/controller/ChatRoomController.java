@@ -19,7 +19,8 @@ public class ChatRoomController {
     // 채팅방 생성
     @PostMapping("")
     public BaseResponse<ChatRoomDto> createChatRoom(){
-        ChatRoomDto chatRoomDto = chatRoomService.createChatRoom();
+        int insertIdx = chatRoomService.createChatRoom(new ChatRoomDto());
+        ChatRoomDto chatRoomDto = chatRoomService.getChatRoomById(insertIdx);
         return new BaseResponse<>(chatRoomDto);
     }
 

@@ -7,6 +7,7 @@ import com.proj.togedutch.dto.ChatRoomDto;
 import com.proj.togedutch.repository.ChatRoomRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -16,10 +17,9 @@ import java.util.stream.Collectors;
 public class ChatRoomService {
     private final ChatRoomRepository chatRoomRepository;
 
-    public ChatRoomDto createChatRoom(){
-        int chatRoomIdx = (chatRoomRepository.save(new ChatRoomDto().toEntity())).getChatRoomIdx();
-        return new ChatRoomDto(chatRoomRepository.findById(chatRoomIdx)
-                .orElseThrow(()-> new IllegalArgumentException("해당 채팅방이 만들어지지 않았습니다.")));
+    @Transactional
+    public int createChatRoom(ChatRoomDto chatRoomDto){
+        return (chatRoomRepository.save(chatRoomDto.toEntity())).getChatRoomIdx();
     }
 
     public List<ChatRoomDto> getAllChatRooms() {
