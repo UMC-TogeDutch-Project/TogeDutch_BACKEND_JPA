@@ -105,6 +105,9 @@ public enum BaseResponseStatus {
     ACCEPT_STATUS(false,3032,"이미 수락된 공고입니다."),
     REJECTD_STATUS(false,3033,"이미 수락거절된 공고입니다."),
 
+    // [GET] /post
+    NOT_FOUND_POST(false, 3040, "일치하는 조건의 공고가 없습니다."),
+
 
 
     /**

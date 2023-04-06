@@ -1,19 +1,20 @@
 package com.proj.togedutch.domain;
 
-import antlr.build.ANTLR;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import com.proj.togedutch.dto.PostReqDto;
+import lombok.*;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 
 @Getter
 @NoArgsConstructor
-@AllArgsConstructor
-@Table(name="Post")
+@DynamicInsert
+@DynamicUpdate
 @Entity
+@Table(name="Post")
 public class Post {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -73,5 +74,26 @@ public class Post {
         this.category = category;
         this.image = image;
         this.userIdx = user_id;
+    }
+
+    public void insertChatRoom(Integer chatRoomIdx){
+        this.chatRoomIdx = chatRoomIdx;
+    }
+
+    public void updatePost(PostReqDto post, String fileUrl){
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Timestamp timeStamp = new Timestamp(System.currentTimeMillis());
+        this.updatedAt = Timestamp.valueOf(sdf.format(timeStamp));
+        this.title = post.getTitle();
+        this.url = post.getUrl();
+        this.deliveryTips = post.getDelivery_tips();
+        this.minimum = post.getMinimum();
+        this.orderTime = post.getOrder_time();
+        this.numOfRecruits = post.getNum_of_recruits();
+        this.status = post.getStatus();
+        this.latitude = post.getLatitude();
+        this.longitude = post.getLongitude();
+        this.category = post.getCategory();
+        this.image = fileUrl;
     }
 }

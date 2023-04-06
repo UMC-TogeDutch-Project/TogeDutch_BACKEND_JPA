@@ -1,19 +1,11 @@
-package com.proj.togedutch.domain;
+package com.proj.togedutch.dto;
 
-import antlr.build.ANTLR;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-
-import javax.persistence.*;
-import java.sql.Timestamp;
+import lombok.*;
 
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name="Review")
-@Entity
 public class ReviewDto {
 
 }
