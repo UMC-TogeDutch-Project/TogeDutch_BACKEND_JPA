@@ -19,13 +19,14 @@ public class ChatRoomController {
     // 채팅방 생성
     @PostMapping("")
     public BaseResponse<ChatRoomDto> createChatRoom(){
-        ChatRoomDto chatRoomDto = chatRoomService.createChatRoom();
+        int insertIdx = chatRoomService.createChatRoom(new ChatRoomDto());
+        ChatRoomDto chatRoomDto = chatRoomService.getChatRoomById(insertIdx);
         return new BaseResponse<>(chatRoomDto);
     }
 
     // 모든 채팅방 리스트 조회
     @GetMapping("")
-    public BaseResponse<List<ChatRoomDto>> getAllChatRooms(){
+    public BaseResponse<List<ChatRoomDto>> getAllChatRooms() throws BaseException {
         List<ChatRoomDto> getChatRoomsRes = chatRoomService.getAllChatRooms();
         return new BaseResponse<>(getChatRoomsRes);
     }

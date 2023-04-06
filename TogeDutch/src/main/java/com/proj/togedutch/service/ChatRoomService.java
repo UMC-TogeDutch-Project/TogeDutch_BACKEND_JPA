@@ -7,6 +7,7 @@ import com.proj.togedutch.dto.ChatRoomDto;
 import com.proj.togedutch.repository.ChatRoomRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -16,8 +17,9 @@ import java.util.stream.Collectors;
 public class ChatRoomService {
     private final ChatRoomRepository chatRoomRepository;
 
-    public ChatRoomDto createChatRoom(){
-        return new ChatRoomDto (chatRoomRepository.save(new ChatRoomDto().toEntity()));
+    @Transactional
+    public int createChatRoom(ChatRoomDto chatRoomDto){
+        return (chatRoomRepository.save(chatRoomDto.toEntity())).getChatRoomIdx();
     }
 
     public List<ChatRoomDto> getAllChatRooms() {
