@@ -8,6 +8,7 @@ import com.amazonaws.services.s3.model.DeleteObjectRequest;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.proj.togedutch.domain.Post;
+import com.proj.togedutch.dto.PostReqDto;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,7 +31,7 @@ public class AWSS3Service {
     private String bucket;
     private final AmazonS3 amazonS3;
 
-    public String uploadFile(MultipartFile file, Post post, int userIdx) throws IOException {
+    public String uploadFile(MultipartFile file, PostReqDto post, int userIdx) throws IOException {
         String fileName = createFileName(file.getOriginalFilename());
 
         try{
