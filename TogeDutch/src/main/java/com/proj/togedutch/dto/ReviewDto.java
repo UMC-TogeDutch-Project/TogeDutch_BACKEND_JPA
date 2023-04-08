@@ -1,11 +1,10 @@
 package com.proj.togedutch.dto;
 
-import lombok.*;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-@Getter
-@Setter
 @NoArgsConstructor
-@AllArgsConstructor
+@Data
 public class ReviewDto {
 
 }
