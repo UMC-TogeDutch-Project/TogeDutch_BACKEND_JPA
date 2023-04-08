@@ -3,10 +3,12 @@ package com.proj.togedutch.service;
 import com.proj.togedutch.config.BaseException;
 import com.proj.togedutch.domain.Declaration;
 import com.proj.togedutch.domain.Post;
+import com.proj.togedutch.dto.CategoryReqDto;
 import com.proj.togedutch.dto.DeclarationResDto;
 import com.proj.togedutch.dto.PostReqDto;
 import com.proj.togedutch.dto.PostResDto;
 import com.proj.togedutch.repository.PostRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,10 +19,10 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 
+@RequiredArgsConstructor
 @Service
 public class PostService {
-    @Autowired
-    private PostRepository postRepository;
+    private final PostRepository postRepository;
 
     // 모든 공고
     public List<PostResDto> findAll() {
@@ -47,8 +49,8 @@ public class PostService {
                 .image(fileUrl)
                 .user_id(userIdx)
                 .build();
-
-        return new PostResDto(postRepository.save(newPost));
+        Post getPost = postRepository.save(newPost);
+        return new PostResDto(getPost);
     }
 
     public List<PostResDto> getSortingPosts(String sort){
@@ -58,7 +60,6 @@ public class PostService {
         status.add("시간만료");
         status.add("공고사용불가");
 
-        postRepository.timezoneSetting();
         if(sort.equals("latest"))   // 최신순
             getPost = postRepository.findByStatusNotInOrderByCreatedAtDesc(status);
         else                        // 주문 임박
@@ -70,7 +71,8 @@ public class PostService {
     }
 
     public PostResDto getPostByUserId(int postIdx, int userIdx) throws BaseException {
-        return new PostResDto(postRepository.findByPostIdxAndUserIdx(postIdx, userIdx));
+        Post getPost = postRepository.findByPostIdxAndUserIdx(postIdx, userIdx);
+        return new PostResDto(getPost);
     }
 
     public String getImageUrl(int postIdx){
@@ -81,15 +83,39 @@ public class PostService {
     public PostResDto modifyPost(int postIdx, PostReqDto post, int userIdx, String fileUrl){
         Post modifyPost = postRepository.findById(postIdx)
                 .orElseThrow(IllegalArgumentException::new);
+        postRepository.timezoneSetting();
         modifyPost.updatePost(post, fileUrl);
-        return new PostResDto(postRepository.save(modifyPost));
+        Post getPost = postRepository.save(modifyPost);
+        return new PostResDto(getPost);
     }
 
     public PostResDto insertChatRoom(int postIdx, int chatRoomIdx){
         Post modifyPost = postRepository.findById(postIdx)
                 .orElseThrow(IllegalArgumentException::new);
         modifyPost.insertChatRoom(chatRoomIdx);
-        return new PostResDto(postRepository.save(modifyPost));
+        Post getPost = postRepository.save(modifyPost);
+        return new PostResDto(getPost);
 
+    }
+
+    public PostResDto modifyPostStatus(int postIdx){
+        postRepository.timezoneSetting();
+        postRepository.modifyPostStatus(postIdx);
+        Post getPost = postRepository.findById(postIdx)
+                .orElseThrow(IllegalArgumentException::new);
+        return new PostResDto(getPost);
+    }
+
+    public List<PostResDto> getPostsByCategory(CategoryReqDto categoryReqDto){
+        postRepository.timezoneSetting();
+        List<Post> getPosts = postRepository.findPostsByCategory(categoryReqDto);
+        return getPosts.stream()
+                .map(m->new PostResDto(m))
+                .collect(Collectors.toList());
+    }
+
+    public PostResDto getPostByChatRoomId(int chatRoomIdx){
+        Post getPost = postRepository.findByChatRoomIdx(chatRoomIdx);
+        return new PostResDto(getPost);
     }
 }

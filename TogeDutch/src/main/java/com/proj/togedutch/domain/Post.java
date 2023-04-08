@@ -8,6 +8,7 @@ import org.hibernate.annotations.DynamicUpdate;
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 @Getter
 @NoArgsConstructor
@@ -81,9 +82,7 @@ public class Post {
     }
 
     public void updatePost(PostReqDto post, String fileUrl){
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        Timestamp timeStamp = new Timestamp(System.currentTimeMillis());
-        this.updatedAt = Timestamp.valueOf(sdf.format(timeStamp));
+        this.updatedAt = setTimezone();
         this.title = post.getTitle();
         this.url = post.getUrl();
         this.deliveryTips = post.getDelivery_tips();
@@ -95,5 +94,16 @@ public class Post {
         this.longitude = post.getLongitude();
         this.category = post.getCategory();
         this.image = fileUrl;
+    }
+
+    public Timestamp setTimezone(){
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Timestamp timeStamp = new Timestamp(System.currentTimeMillis());
+        Calendar cal = Calendar.getInstance();
+
+        cal.setTime(timeStamp);
+        cal.add(Calendar.HOUR, 9);
+        timeStamp.setTime(cal.getTime().getTime());
+        return Timestamp.valueOf(sdf.format(timeStamp));
     }
 }

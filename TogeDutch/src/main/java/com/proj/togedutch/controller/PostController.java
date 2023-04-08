@@ -4,12 +4,14 @@ import com.proj.togedutch.config.BaseException;
 import com.proj.togedutch.config.BaseResponse;
 import com.proj.togedutch.config.BaseResponseStatus;
 import com.proj.togedutch.domain.Post;
+import com.proj.togedutch.dto.CategoryReqDto;
 import com.proj.togedutch.dto.ChatRoomDto;
 import com.proj.togedutch.dto.PostReqDto;
 import com.proj.togedutch.dto.PostResDto;
 import com.proj.togedutch.service.AWSS3Service;
 import com.proj.togedutch.service.ChatRoomService;
 import com.proj.togedutch.service.PostService;
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,15 +24,13 @@ import java.io.IOException;
 import java.util.List;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/post")
 public class PostController {
     final Logger logger = LoggerFactory.getLogger(this.getClass());
-    @Autowired
-    private PostService postService;
-    @Autowired
-    private ChatRoomService chatRoomService;
-    @Autowired
-    private AWSS3Service awsS3Service;
+    private final PostService postService;
+    private final ChatRoomService chatRoomService;
+    private final AWSS3Service awsS3Service;
     @Value("${cloud.aws.url}")
     private String url;
 
@@ -143,5 +143,28 @@ public class PostController {
         PostResDto modifyPost = postService.modifyPost(postIdx, post, user, fileUrl);
         logger.info("Modify success");
         return new BaseResponse<>(modifyPost);
+    }
+
+    // 공고 상태 변경
+    @PutMapping("/status/{postIdx}")
+    public BaseResponse<PostResDto> modifyPostStatus(@PathVariable("postIdx") int postIdx) throws BaseException {
+        PostResDto modifyPost = postService.modifyPostStatus(postIdx);
+        return new BaseResponse<>(modifyPost);
+    }
+
+    // 카테고리로 공고 조회
+    // 파라미터를 기준으로 1km 이내의 공고 중 order_time이 유효하고, 아직 모집중인 상태의 공고 리스트 반환
+    @PostMapping("/category")
+    public BaseResponse<List<PostResDto>> getPostsByCategory(@RequestBody CategoryReqDto categoryReqDto) throws BaseException {
+        // 에러 처리 필요
+        List<PostResDto> getPostsByCategory = postService.getPostsByCategory(categoryReqDto);
+        return new BaseResponse<>(getPostsByCategory);
+    }
+
+    // 채팅방 아이디로 공고 조회
+    @GetMapping("/chatRoom/{chatRoomIdx}")
+    public BaseResponse<PostResDto> getPostByChatRoomId(@PathVariable int chatRoomIdx) throws BaseException {
+        PostResDto getPost = postService.getPostByChatRoomId(chatRoomIdx);
+        return new BaseResponse<>(getPost);
     }
 }
