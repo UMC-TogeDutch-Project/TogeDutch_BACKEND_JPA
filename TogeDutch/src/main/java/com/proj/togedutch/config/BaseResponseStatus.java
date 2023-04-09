@@ -91,7 +91,7 @@ public enum BaseResponseStatus {
     FAILED_TO_FIND_USER(false, 3015, "존재하지 않는 회원입니다. 회원가입이 필요합니다."),
 
     // [POST] /post
-    FAILED_TO_FIND_BY_CATEGORY(false, 3016, "해당하는 카테고리에 공고가 없습니다."),
+    FAILED_TO_FIND_BY_CATEGORY(false, 3016, "해당하는 카테고리의 조건에 맞는 공고가 없습니다."),
     NONE_INPUT_CATEGORY(false, 3017, "카테고리를 입력하지 않았습니다."),
     //Application
     NOT_FULL_NUM_OF_RECRUITS(false, 3020, "모집인원이 채워지지 않았습니다."),

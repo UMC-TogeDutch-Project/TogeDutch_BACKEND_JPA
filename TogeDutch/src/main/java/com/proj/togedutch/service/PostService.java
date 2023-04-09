@@ -1,21 +1,22 @@
 package com.proj.togedutch.service;
 
 import com.proj.togedutch.config.BaseException;
-import com.proj.togedutch.domain.Declaration;
+import static com.proj.togedutch.config.BaseResponseStatus.*;
+
+import com.proj.togedutch.config.BaseResponseStatus;
 import com.proj.togedutch.domain.Post;
 import com.proj.togedutch.dto.CategoryReqDto;
-import com.proj.togedutch.dto.DeclarationResDto;
 import com.proj.togedutch.dto.PostReqDto;
 import com.proj.togedutch.dto.PostResDto;
 import com.proj.togedutch.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 
@@ -106,9 +107,16 @@ public class PostService {
         return new PostResDto(getPost);
     }
 
-    public List<PostResDto> getPostsByCategory(CategoryReqDto categoryReqDto){
+    public List<PostResDto> getPostsByCategory(CategoryReqDto categoryReqDto) throws BaseException {
         postRepository.timezoneSetting();
-        List<Post> getPosts = postRepository.findPostsByCategory(categoryReqDto);
+        Optional<Post> getPosts = postRepository.findPostsByCategory(categoryReqDto);
+
+        // 이샛기 왜이래?????????????????????????????????
+        if(!getPosts.isPresent()) {
+            System.out.println("결과가 null입니다.");
+            throw new BaseException(BaseResponseStatus.FAILED_TO_FIND_BY_CATEGORY);
+        }
+
         return getPosts.stream()
                 .map(m->new PostResDto(m))
                 .collect(Collectors.toList());

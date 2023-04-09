@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface PostRepository extends JpaRepository<Post, Integer> {
@@ -47,7 +48,7 @@ public interface PostRepository extends JpaRepository<Post, Integer> {
             "where p.order_time > now() and (p.category = :#{#categoryReq.category1} or p.category = :#{#categoryReq.category2} or p.category = :#{#categoryReq.category3} or p.category = :#{#categoryReq.category4} or p.category = :#{#categoryReq.category5} or p.category = :#{#categoryReq.category6}) and p.status = \"모집중\"\n" +
             "HAVING distance <= 1\n" +
             "ORDER BY distance;")
-    List<Post> findPostsByCategory(@Param("categoryReq") CategoryReqDto categoryReq);
+    Optional<Post> findPostsByCategory(@Param("categoryReq") CategoryReqDto categoryReq);
 
     // 채팅방 아이디로 공고 조회
     Post findByChatRoomIdx(int chatRoomIdx);
