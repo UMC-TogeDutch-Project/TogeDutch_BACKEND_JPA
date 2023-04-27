@@ -74,13 +74,13 @@ public class PostController {
 
         logger.info("fileUrl은 " + fileUrl);
 
-        PostResDto createPost = postService.createPost(post, fileUrl, user);
+        int createPostIdx = postService.createPost(post, fileUrl, user);
 
         // 채팅방 생성
         int insertIdx = chatRoomService.createChatRoom(new ChatRoomDto());
         ChatRoomDto createChatRoom = chatRoomService.getChatRoomById(insertIdx);
 
-        PostResDto modifyPost = postService.insertChatRoom(createPost.getPost_id(), createChatRoom.getChatRoomIdx());
+        PostResDto modifyPost = postService.insertChatRoom(createPostIdx, createChatRoom.getChatRoomIdx());
         return new BaseResponse<>(modifyPost);
     }
 
@@ -156,7 +156,8 @@ public class PostController {
     // 파라미터를 기준으로 1km 이내의 공고 중 order_time이 유효하고, 아직 모집중인 상태의 공고 리스트 반환
     @PostMapping("/category")
     public BaseResponse<List<PostResDto>> getPostsByCategory(@RequestBody CategoryReqDto categoryReqDto) throws BaseException {
-        // 에러 처리 필요
+        if(categoryReqDto.getCategory1() == null)   // 카테고리를 아무것도 입력하지 않은 경우
+            return new BaseResponse<>(BaseResponseStatus.NONE_INPUT_CATEGORY);
         List<PostResDto> getPostsByCategory = postService.getPostsByCategory(categoryReqDto);
         return new BaseResponse<>(getPostsByCategory);
     }
