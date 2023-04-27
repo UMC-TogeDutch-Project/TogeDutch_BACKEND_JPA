@@ -75,6 +75,7 @@ public class PostController {
         logger.info("fileUrl은 " + fileUrl);
 
         PostResDto createPost = postService.createPost(post, fileUrl, user);
+        System.out.println("Controller에서 찍음 createPost.getCreatedAt " + createPost.getCreated_at());
 
         // 채팅방 생성
         int insertIdx = chatRoomService.createChatRoom(new ChatRoomDto());

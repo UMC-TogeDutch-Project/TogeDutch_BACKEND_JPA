@@ -2,12 +2,15 @@ package com.proj.togedutch.domain;
 
 import com.proj.togedutch.dto.PostReqDto;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
+import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.Calendar;
 
 @Getter
@@ -37,7 +40,8 @@ public class Post {
     private int recruitedNum;
     @Column(name="status")
     private String status;
-    @Column(name="created_at")
+    @CreationTimestamp
+    @Column(name="created_at", updatable = false)
     private Timestamp createdAt;
     @Column(name="updated_at")
     private Timestamp updatedAt;

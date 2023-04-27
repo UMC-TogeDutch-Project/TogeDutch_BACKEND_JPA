@@ -50,7 +50,11 @@ public class PostService {
                 .image(fileUrl)
                 .user_id(userIdx)
                 .build();
+
+        postRepository.timezoneSetting();
         Post getPost = postRepository.save(newPost);
+        System.out.println("Service에서 찍음 : post.createdAt은 " + getPost.getCreatedAt());
+
         return new PostResDto(getPost);
     }
 
