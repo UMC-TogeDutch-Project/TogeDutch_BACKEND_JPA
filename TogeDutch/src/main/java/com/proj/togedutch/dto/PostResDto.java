@@ -1,7 +1,6 @@
 package com.proj.togedutch.dto;
 
 import com.proj.togedutch.domain.Post;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -39,6 +38,7 @@ public class PostResDto {
         this.minimum = post.getMinimum();
         this.order_time = post.getOrderTime();
         this.num_of_recruits = post.getNumOfRecruits();
+        this.recruited_num = post.getRecruitedNum();
         this.status = post.getStatus();
         this.created_at = post.getCreatedAt();
         this.updated_at = post.getUpdatedAt();

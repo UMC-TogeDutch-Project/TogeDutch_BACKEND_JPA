@@ -34,7 +34,8 @@ public class PostService {
     }
 
     @Transactional(rollbackFor = SQLException.class)
-    public PostResDto createPost(PostReqDto post, String fileUrl, int userIdx){
+    public int createPost(PostReqDto post, String fileUrl, int userIdx){
+        // Dto to Entity
         Post newPost = Post.builder()
                 .title(post.getTitle())
                 .url(post.getUrl())
@@ -51,11 +52,7 @@ public class PostService {
                 .user_id(userIdx)
                 .build();
 
-        postRepository.timezoneSetting();
-        Post getPost = postRepository.save(newPost);
-        System.out.println("Service에서 찍음 : post.createdAt은 " + getPost.getCreatedAt());
-
-        return new PostResDto(getPost);
+        return postRepository.save(newPost).getPostIdx();
     }
 
     public List<PostResDto> getSortingPosts(String sort){
@@ -88,7 +85,6 @@ public class PostService {
     public PostResDto modifyPost(int postIdx, PostReqDto post, int userIdx, String fileUrl){
         Post modifyPost = postRepository.findById(postIdx)
                 .orElseThrow(IllegalArgumentException::new);
-        postRepository.timezoneSetting();
         modifyPost.updatePost(post, fileUrl);
         Post getPost = postRepository.save(modifyPost);
         return new PostResDto(getPost);

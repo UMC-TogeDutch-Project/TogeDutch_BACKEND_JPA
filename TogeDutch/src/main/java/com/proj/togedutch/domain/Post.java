@@ -5,6 +5,7 @@ import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
+import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
@@ -41,7 +42,7 @@ public class Post {
     @Column(name="status")
     private String status;
     @CreationTimestamp
-    @Column(name="created_at", updatable = false)
+    @Column(name="created_at")
     private Timestamp createdAt;
     @Column(name="updated_at")
     private Timestamp updatedAt;
@@ -86,28 +87,18 @@ public class Post {
     }
 
     public void updatePost(PostReqDto post, String fileUrl){
-        this.updatedAt = setTimezone();
+        this.updatedAt = Timestamp.valueOf(LocalDateTime.now());
         this.title = post.getTitle();
         this.url = post.getUrl();
         this.deliveryTips = post.getDelivery_tips();
         this.minimum = post.getMinimum();
         this.orderTime = post.getOrder_time();
         this.numOfRecruits = post.getNum_of_recruits();
+        this.recruitedNum = post.getRecruited_num();
         this.status = post.getStatus();
         this.latitude = post.getLatitude();
         this.longitude = post.getLongitude();
         this.category = post.getCategory();
         this.image = fileUrl;
-    }
-
-    public Timestamp setTimezone(){
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        Timestamp timeStamp = new Timestamp(System.currentTimeMillis());
-        Calendar cal = Calendar.getInstance();
-
-        cal.setTime(timeStamp);
-        cal.add(Calendar.HOUR, 9);
-        timeStamp.setTime(cal.getTime().getTime());
-        return Timestamp.valueOf(sdf.format(timeStamp));
     }
 }
