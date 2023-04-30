@@ -1,7 +1,6 @@
 package com.proj.togedutch.service;
 
 import com.proj.togedutch.config.BaseException;
-import static com.proj.togedutch.config.BaseResponseStatus.*;
 
 import com.proj.togedutch.config.BaseResponseStatus;
 import com.proj.togedutch.domain.Post;
@@ -18,6 +17,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+
+import static com.proj.togedutch.config.BaseResponseStatus.FAILED_TO_FIND_BY_CATEGORY;
 
 
 @RequiredArgsConstructor
@@ -100,7 +101,6 @@ public class PostService {
     }
 
     public PostResDto modifyPostStatus(int postIdx){
-        postRepository.timezoneSetting();
         postRepository.modifyPostStatus(postIdx);
         Post getPost = postRepository.findById(postIdx)
                 .orElseThrow(IllegalArgumentException::new);
@@ -108,13 +108,10 @@ public class PostService {
     }
 
     public List<PostResDto> getPostsByCategory(CategoryReqDto categoryReqDto) throws BaseException {
-        postRepository.timezoneSetting();
         Optional<Post> getPosts = postRepository.findPostsByCategory(categoryReqDto);
-
-        // 이샛기 왜이래?????????????????????????????????
-        if(!getPosts.isPresent()) {
-            System.out.println("결과가 null입니다.");
-            throw new BaseException(BaseResponseStatus.FAILED_TO_FIND_BY_CATEGORY);
+        if(!getPosts.isPresent()){
+            System.out.println("114라인 : null에 해당함");
+            throw new BaseException(FAILED_TO_FIND_BY_CATEGORY);
         }
 
         return getPosts.stream()

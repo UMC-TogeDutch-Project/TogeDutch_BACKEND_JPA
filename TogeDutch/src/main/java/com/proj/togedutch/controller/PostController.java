@@ -141,7 +141,6 @@ public class PostController {
 
         // 공고 내용 수정
         PostResDto modifyPost = postService.modifyPost(postIdx, post, user, fileUrl);
-        logger.info("Modify success");
         return new BaseResponse<>(modifyPost);
     }
 
