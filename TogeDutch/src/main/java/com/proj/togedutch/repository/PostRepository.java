@@ -23,7 +23,9 @@ public interface PostRepository extends JpaRepository<Post, Integer> {
     List<Post> findByStatusNotInOrderByCreatedAtDesc(List<String> status);
 
     // 주문 임박 조회
-    @Query(nativeQuery = true, value = "SELECT * FROM Post as p WHERE p.order_time between now() and DATE_ADD(NOW(), INTERVAL 10 MINUTE) and p.status NOT IN (:status) order by p.order_time asc")
+    @Query(nativeQuery = true, value = "SELECT * " +
+            "FROM Post as p " +
+            "WHERE p.order_time between now() and DATE_ADD(NOW(), INTERVAL 10 MINUTE) and p.status NOT IN (:status) order by p.order_time asc")
     List<Post> findByOrderImminent(@Param("status") List<String> status);
 
     // 공고 특정 조회 (Post API 5번)
