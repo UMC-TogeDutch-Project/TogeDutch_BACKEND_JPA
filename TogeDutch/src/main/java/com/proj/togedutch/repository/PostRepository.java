@@ -16,16 +16,16 @@ import java.util.Optional;
 public interface PostRepository extends JpaRepository<Post, Integer> {
     @Transactional
     @Modifying
-    @Query(nativeQuery = true, value = "SET time_zone = 'Asia/Seoul'")
+    @Query(value = "SET time_zone = 'Asia/Seoul'", nativeQuery = true)
     void timezoneSetting();
 
     // 최신순 조회
     List<Post> findByStatusNotInOrderByCreatedAtDesc(List<String> status);
 
     // 주문 임박 조회
-    @Query(nativeQuery = true, value = "SELECT * " +
+    @Query(value = "SELECT * " +
             "FROM Post as p " +
-            "WHERE p.order_time between now() and DATE_ADD(NOW(), INTERVAL 10 MINUTE) and p.status NOT IN (:status) order by p.order_time asc")
+            "WHERE p.order_time between now() and DATE_ADD(NOW(), INTERVAL 10 MINUTE) and p.status NOT IN (:status) order by p.order_time asc", nativeQuery = true)
     List<Post> findByOrderImminent(@Param("status") List<String> status);
 
     // 공고 특정 조회 (Post API 5번)
@@ -34,13 +34,13 @@ public interface PostRepository extends JpaRepository<Post, Integer> {
     // 공고 상태 변경
     @Transactional
     @Modifying
-    @Query(nativeQuery = true, value = "UPDATE Post p "
+    @Query(value = "UPDATE Post p "
             + "SET p.status = \"시간만료\" "
-            + "where p.post_id = :postIdx and p.order_time < current_timestamp and p.num_of_recruits != p.recruited_num")
+            + "where p.post_id = :postIdx and p.order_time < current_timestamp and p.num_of_recruits != p.recruited_num", nativeQuery = true)
     void modifyPostStatus(@Param("postIdx") int postIdx);
 
     // 카테고리로 공고 조회
-    @Query(nativeQuery = true, value = "SELECT\n" +
+    @Query(value = "SELECT\n" +
             "    * , (\n" +
             "       6371 * acos ( cos ( radians(:#{#categoryReq.latitude}) ) * cos( radians(latitude) ) * cos( radians(longitude) - radians(:#{#categoryReq.longitude}) )\n" +
             "          + sin ( radians(:#{#categoryReq.latitude}) ) * sin( radians(latitude) )\n" +
@@ -49,9 +49,13 @@ public interface PostRepository extends JpaRepository<Post, Integer> {
             "FROM Post p\n" +
             "where p.order_time > now() and (p.category = :#{#categoryReq.category1} or p.category = :#{#categoryReq.category2} or p.category = :#{#categoryReq.category3} or p.category = :#{#categoryReq.category4} or p.category = :#{#categoryReq.category5} or p.category = :#{#categoryReq.category6}) and p.status = \"모집중\"\n" +
             "HAVING distance <= 1\n" +
-            "ORDER BY distance;")
+            "ORDER BY distance", nativeQuery = true)
     Optional<Post> findPostsByCategory(@Param("categoryReq") CategoryReqDto categoryReq);
 
     // 채팅방 아이디로 공고 조회
     Post findByChatRoomIdx(int chatRoomIdx);
+
+    // 해당 공고에 참여중인 유저 전체 조회
+//    @Query(value = "select * from User u where u.user_id in ( select a.User_user_id from Application a where a.Post_post_id = ?1 and a.status = \"수락완료\")", nativeQuery = true)
+//    List<User> findUsersInPost(@Param("postIdx") int postIdx);
 }
