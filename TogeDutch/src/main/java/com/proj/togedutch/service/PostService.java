@@ -19,6 +19,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static com.proj.togedutch.config.BaseResponseStatus.FAILED_TO_FIND_BY_CATEGORY;
+import static com.proj.togedutch.config.BaseResponseStatus.POST_NOT_ACCESSIBLE;
 
 
 @RequiredArgsConstructor
@@ -27,7 +28,7 @@ public class PostService {
     private final PostRepository postRepository;
 
     // 모든 공고
-    public List<PostResDto> findAll() {
+    public List<PostResDto> findAll() throws BaseException {
         List<Post> getPost = postRepository.findAll();
         return getPost.stream()
                 .map(m->new PostResDto(m))
@@ -35,7 +36,7 @@ public class PostService {
     }
 
     @Transactional(rollbackFor = SQLException.class)
-    public int createPost(PostReqDto post, String fileUrl, int userIdx){
+    public int createPost(PostReqDto post, String fileUrl, int userIdx) throws BaseException {
         // Dto to Entity
         Post newPost = Post.builder()
                 .title(post.getTitle())
@@ -56,7 +57,7 @@ public class PostService {
         return postRepository.save(newPost).getPostIdx();
     }
 
-    public List<PostResDto> getSortingPosts(String sort){
+    public List<PostResDto> getSortingPosts(String sort) throws BaseException {
         List<Post> getPost = null;
         List<String> status = new ArrayList<>();
         status.add("모집완료");
@@ -78,12 +79,12 @@ public class PostService {
         return new PostResDto(getPost);
     }
 
-    public String getImageUrl(int postIdx){
+    public String getImageUrl(int postIdx) throws BaseException {
         Post getPost = postRepository.findById(postIdx).orElseThrow(IllegalArgumentException::new);
         return getPost.getImage();
     }
 
-    public PostResDto modifyPost(int postIdx, PostReqDto post, int userIdx, String fileUrl){
+    public PostResDto modifyPost(int postIdx, PostReqDto post, int userIdx, String fileUrl) throws BaseException {
         Post modifyPost = postRepository.findById(postIdx)
                 .orElseThrow(IllegalArgumentException::new);
         modifyPost.updatePost(post, fileUrl);
@@ -91,7 +92,7 @@ public class PostService {
         return new PostResDto(getPost);
     }
 
-    public PostResDto insertChatRoom(int postIdx, int chatRoomIdx){
+    public PostResDto insertChatRoom(int postIdx, int chatRoomIdx) throws BaseException {
         Post modifyPost = postRepository.findById(postIdx)
                 .orElseThrow(IllegalArgumentException::new);
         modifyPost.insertChatRoom(chatRoomIdx);
@@ -100,7 +101,7 @@ public class PostService {
 
     }
 
-    public PostResDto modifyPostStatus(int postIdx){
+    public PostResDto modifyPostStatus(int postIdx) throws BaseException {
         postRepository.modifyPostStatus(postIdx);
         Post getPost = postRepository.findById(postIdx)
                 .orElseThrow(IllegalArgumentException::new);
@@ -109,18 +110,25 @@ public class PostService {
 
     public List<PostResDto> getPostsByCategory(CategoryReqDto categoryReqDto) throws BaseException {
         Optional<Post> getPosts = postRepository.findPostsByCategory(categoryReqDto);
-        if(!getPosts.isPresent()){
-            System.out.println("114라인 : null에 해당함");
+        if(!getPosts.isPresent())
             throw new BaseException(FAILED_TO_FIND_BY_CATEGORY);
-        }
 
         return getPosts.stream()
                 .map(m->new PostResDto(m))
                 .collect(Collectors.toList());
     }
 
-    public PostResDto getPostByChatRoomId(int chatRoomIdx){
+    public PostResDto getPostByChatRoomId(int chatRoomIdx) throws BaseException {
         Post getPost = postRepository.findByChatRoomIdx(chatRoomIdx);
         return new PostResDto(getPost);
     }
+
+//    public List<User> getUsersInPost(int postIdx) throws BaseException {
+//        Post post = postRepository.findById(postIdx).orElseThrow(IllegalArgumentException::new);
+//        if(post.getStatus().equals("공고사용불가"))
+//            throw new BaseException(POST_NOT_ACCESSIBLE);
+//
+//        List<User> getUsersInPost = postRepository.findUsersInPost(postIdx);
+//        return getUsersInPost;
+//    }
 }
