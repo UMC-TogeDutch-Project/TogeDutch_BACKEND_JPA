@@ -131,4 +131,11 @@ public class PostService {
 //        List<User> getUsersInPost = postRepository.findUsersInPost(postIdx);
 //        return getUsersInPost;
 //    }
+
+    public PostResDto getPostById(int postIdx) throws BaseException {
+        Post getPost = postRepository.findById(postIdx)
+                .orElseThrow(IllegalArgumentException::new);
+        return new PostResDto(getPost);
+    }
+
 }
