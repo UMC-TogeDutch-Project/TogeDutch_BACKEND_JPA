@@ -1,10 +1,7 @@
 package com.proj.togedutch.dto;
 
 import com.proj.togedutch.domain.Post;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.sql.Timestamp;
 
@@ -24,4 +21,5 @@ public class PostReqDto {
     private Double latitude;
     private Double longitude;
     private String category;
+
 }

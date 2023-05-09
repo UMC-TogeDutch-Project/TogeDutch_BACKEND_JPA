@@ -1,22 +1,25 @@
 package com.proj.togedutch.service;
 
 import com.proj.togedutch.config.BaseException;
-import com.proj.togedutch.domain.Declaration;
+
+import com.proj.togedutch.config.BaseResponseStatus;
 import com.proj.togedutch.domain.Post;
 import com.proj.togedutch.dto.CategoryReqDto;
-import com.proj.togedutch.dto.DeclarationResDto;
 import com.proj.togedutch.dto.PostReqDto;
 import com.proj.togedutch.dto.PostResDto;
 import com.proj.togedutch.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
+
+import static com.proj.togedutch.config.BaseResponseStatus.FAILED_TO_FIND_BY_CATEGORY;
+import static com.proj.togedutch.config.BaseResponseStatus.POST_NOT_ACCESSIBLE;
 
 
 @RequiredArgsConstructor
@@ -25,7 +28,7 @@ public class PostService {
     private final PostRepository postRepository;
 
     // 모든 공고
-    public List<PostResDto> findAll() {
+    public List<PostResDto> findAll() throws BaseException {
         List<Post> getPost = postRepository.findAll();
         return getPost.stream()
                 .map(m->new PostResDto(m))
@@ -33,7 +36,8 @@ public class PostService {
     }
 
     @Transactional(rollbackFor = SQLException.class)
-    public PostResDto createPost(PostReqDto post, String fileUrl, int userIdx){
+    public int createPost(PostReqDto post, String fileUrl, int userIdx) throws BaseException {
+        // Dto to Entity
         Post newPost = Post.builder()
                 .title(post.getTitle())
                 .url(post.getUrl())
@@ -49,11 +53,11 @@ public class PostService {
                 .image(fileUrl)
                 .user_id(userIdx)
                 .build();
-        Post getPost = postRepository.save(newPost);
-        return new PostResDto(getPost);
+
+        return postRepository.save(newPost).getPostIdx();
     }
 
-    public List<PostResDto> getSortingPosts(String sort){
+    public List<PostResDto> getSortingPosts(String sort) throws BaseException {
         List<Post> getPost = null;
         List<String> status = new ArrayList<>();
         status.add("모집완료");
@@ -75,21 +79,20 @@ public class PostService {
         return new PostResDto(getPost);
     }
 
-    public String getImageUrl(int postIdx){
+    public String getImageUrl(int postIdx) throws BaseException {
         Post getPost = postRepository.findById(postIdx).orElseThrow(IllegalArgumentException::new);
         return getPost.getImage();
     }
 
-    public PostResDto modifyPost(int postIdx, PostReqDto post, int userIdx, String fileUrl){
+    public PostResDto modifyPost(int postIdx, PostReqDto post, int userIdx, String fileUrl) throws BaseException {
         Post modifyPost = postRepository.findById(postIdx)
                 .orElseThrow(IllegalArgumentException::new);
-        postRepository.timezoneSetting();
         modifyPost.updatePost(post, fileUrl);
         Post getPost = postRepository.save(modifyPost);
         return new PostResDto(getPost);
     }
 
-    public PostResDto insertChatRoom(int postIdx, int chatRoomIdx){
+    public PostResDto insertChatRoom(int postIdx, int chatRoomIdx) throws BaseException {
         Post modifyPost = postRepository.findById(postIdx)
                 .orElseThrow(IllegalArgumentException::new);
         modifyPost.insertChatRoom(chatRoomIdx);
@@ -98,24 +101,41 @@ public class PostService {
 
     }
 
-    public PostResDto modifyPostStatus(int postIdx){
-        postRepository.timezoneSetting();
+    public PostResDto modifyPostStatus(int postIdx) throws BaseException {
         postRepository.modifyPostStatus(postIdx);
         Post getPost = postRepository.findById(postIdx)
                 .orElseThrow(IllegalArgumentException::new);
         return new PostResDto(getPost);
     }
 
-    public List<PostResDto> getPostsByCategory(CategoryReqDto categoryReqDto){
-        postRepository.timezoneSetting();
-        List<Post> getPosts = postRepository.findPostsByCategory(categoryReqDto);
+    public List<PostResDto> getPostsByCategory(CategoryReqDto categoryReqDto) throws BaseException {
+        Optional<Post> getPosts = postRepository.findPostsByCategory(categoryReqDto);
+        if(!getPosts.isPresent())
+            throw new BaseException(FAILED_TO_FIND_BY_CATEGORY);
+
         return getPosts.stream()
                 .map(m->new PostResDto(m))
                 .collect(Collectors.toList());
     }
 
-    public PostResDto getPostByChatRoomId(int chatRoomIdx){
+    public PostResDto getPostByChatRoomId(int chatRoomIdx) throws BaseException {
         Post getPost = postRepository.findByChatRoomIdx(chatRoomIdx);
         return new PostResDto(getPost);
     }
+
+//    public List<User> getUsersInPost(int postIdx) throws BaseException {
+//        Post post = postRepository.findById(postIdx).orElseThrow(IllegalArgumentException::new);
+//        if(post.getStatus().equals("공고사용불가"))
+//            throw new BaseException(POST_NOT_ACCESSIBLE);
+//
+//        List<User> getUsersInPost = postRepository.findUsersInPost(postIdx);
+//        return getUsersInPost;
+//    }
+
+    public PostResDto getPostById(int postIdx) throws BaseException {
+        Post getPost = postRepository.findById(postIdx)
+                .orElseThrow(IllegalArgumentException::new);
+        return new PostResDto(getPost);
+    }
+
 }
