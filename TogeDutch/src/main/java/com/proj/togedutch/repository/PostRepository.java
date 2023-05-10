@@ -58,4 +58,8 @@ public interface PostRepository extends JpaRepository<Post, Integer> {
     // 해당 공고에 참여중인 유저 전체 조회
 //    @Query(value = "select * from User u where u.user_id in ( select a.User_user_id from Application a where a.Post_post_id = ?1 and a.status = \"수락완료\")", nativeQuery = true)
 //    List<User> findUsersInPost(@Param("postIdx") int postIdx);
+
+    @Query(value = "select * from Post p where p.post_id IN " +
+            "(select l.Post_post_id from LikeUsers l where l.User_user_id = :userIdx and p.status != \"공고사용불가\" )", nativeQuery = true)
+    List<Post> findLikePostByUserIdx(@Param("userIdx") int userIdx);
 }

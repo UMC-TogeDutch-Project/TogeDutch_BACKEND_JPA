@@ -5,7 +5,7 @@ import lombok.*;
 
 @Getter
 @Setter
-@AllArgsConstructor
+@NoArgsConstructor
 public class LikeUsersDto {
     private int likeIdx;
     private int postIdx;

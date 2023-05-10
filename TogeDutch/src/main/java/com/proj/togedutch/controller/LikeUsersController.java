@@ -3,7 +3,6 @@ package com.proj.togedutch.controller;
 import com.proj.togedutch.config.BaseException;
 import com.proj.togedutch.config.BaseResponse;
 import com.proj.togedutch.config.BaseResponseStatus;
-import com.proj.togedutch.domain.Post;
 import com.proj.togedutch.dto.LikeUsersDto;
 import com.proj.togedutch.dto.PostResDto;
 import com.proj.togedutch.service.LikeUsersService;
