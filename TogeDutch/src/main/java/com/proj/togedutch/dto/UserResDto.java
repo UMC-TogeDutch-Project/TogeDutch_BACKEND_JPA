@@ -1,9 +1,7 @@
 package com.proj.togedutch.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import com.proj.togedutch.domain.User;
+import lombok.*;
 
 import java.sql.Timestamp;
 
@@ -27,4 +25,21 @@ public class UserResDto {
     private double longitude;
     private String jwt;
 
+    @Builder
+    public UserResDto(User user) {
+        this.userIdx = user.getUserIdx();
+        this.keywordIdx = user.getKeywordIdx();
+        this.name = user.getName();
+        this.role = user.getRole();
+        this.email = user.getEmail();
+        this.password = user.getPassword();
+        this.phone = user.getPhone();
+        this.image = user.getImage();
+        this.status = user.getStatus();
+        this.created_at = user.getCreated_at();
+        this.updated_at = user.getUpdated_at();
+        this.latitude = user.getLatitude();
+        this.longitude = user.getLongitude();
+        this.jwt = user.getJwt();
+    }
 }

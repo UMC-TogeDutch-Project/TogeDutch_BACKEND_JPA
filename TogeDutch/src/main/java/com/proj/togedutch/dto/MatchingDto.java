@@ -6,10 +6,10 @@ import lombok.*;
 @AllArgsConstructor
 @Data
 public class MatchingDto {
-    int MatchingId;
-    int UserFirstId;
-    int UserSecondId;
-    int UserThirdId;
-    int count;
-    int postIdx;
+    private int MatchingId;
+    private Integer UserFirstId;
+    private Integer UserSecondId;
+    private Integer UserThirdId;
+    private Integer count;
+    private Integer postIdx;
 }
