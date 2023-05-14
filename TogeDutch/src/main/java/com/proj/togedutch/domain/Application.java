@@ -24,14 +24,21 @@ public class Application {
     @Column(name="status")
     private String status;
 
-    @Column(name="post_id")
+    @Column(name="Post_post_id")
     private int postIdx;
 
-    @Column(name="user_id")
+    // 공고 업로드 한 유저의 id
+    @Column(name="Post_User_user_id")
+    private int uploaderIdx;
+
+    @Column(name="ChatRoom_chatRoom_id")
+    private int chatRoomIdx;
+
+    // 공고를 신청한 유저의 id
+    @Column(name="User_user_id")
     private int userIdx;
 
-    @Column(name="chatRoom_id")
-    private int chatRoomIdx;
+
 
     @Builder
     public Application(int applicationIdx, String status, int postIdx, int userIdx, int chatRoomIdx) {
@@ -40,5 +47,13 @@ public class Application {
         this.postIdx = postIdx;
         this.userIdx = userIdx;
         this.chatRoomIdx = chatRoomIdx;
+    }
+
+    public Application(String status, int postIdx, int uploaderIdx, int chatRoomIdx, int userIdx) {
+        this.status = status;
+        this.postIdx = postIdx;
+        this.uploaderIdx = uploaderIdx;
+        this.chatRoomIdx = chatRoomIdx;
+        this.userIdx = userIdx;
     }
 }

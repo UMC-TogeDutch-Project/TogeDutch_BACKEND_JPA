@@ -1,5 +1,6 @@
 package com.proj.togedutch.domain;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
@@ -21,19 +22,39 @@ public class Matching {
     private int matchingIdx;
 
     @Column(name="user_first_id")
-    private int UserFirstIdx;
+    private Integer UserFirstIdx;
 
     @Column(name="user_second_id")
-    int UserSecondIdx;
+    private Integer UserSecondIdx;
 
     @Column(name="user_third_id")
-    int UserThirdIdx;
+    private Integer UserThirdIdx;
 
     @Column(name="count")
-    int count;
+    private Integer count;
 
     @Column(name="Post_post_id")
-    int postIdx;
+    private Integer postIdx;
 
+    public void updateCountToOne(int userFirstIdx, int count) {
+        this.UserFirstIdx = userFirstIdx;
+        this.count = count;
+    }
 
+    public void updateCountToTwo(int userSecondIdx, int count) {
+        this.UserSecondIdx = userSecondIdx;
+        this.count = count;
+    }
+
+    public void updateCountToThree(int userThirdIdx, int count) {
+        this.UserThirdIdx = userThirdIdx;
+        this.count = count;
+    }
+
+    @Builder
+    public Matching(int userFirstIdx, int count,int postIdx) {
+        this.UserFirstIdx = userFirstIdx;
+        this.count = count;
+        this.postIdx = postIdx;
+    }
 }
