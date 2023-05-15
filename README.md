@@ -12,9 +12,9 @@ UMC 3기 가치더치 팀프로젝트
 
 ## Commit Message Convention
 
-> 커밋태그: 내용 #닉네임
+> 커밋태그: 내용 #이슈 번호
 
-ex. `feat : login 파일 추가 #jay'
+ex. `feat : login 파일 추가 #40'
 
 | command | mean |
 | --- | --- |
