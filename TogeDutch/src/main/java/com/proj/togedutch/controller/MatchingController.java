@@ -3,6 +3,7 @@ package com.proj.togedutch.controller;
 import com.proj.togedutch.config.BaseException;
 import com.proj.togedutch.config.BaseResponse;
 import com.proj.togedutch.domain.User;
+import com.proj.togedutch.dto.MatchingResDto;
 import com.proj.togedutch.dto.UserResDto;
 import com.proj.togedutch.service.MatchingService;
 import lombok.RequiredArgsConstructor;
@@ -19,9 +20,9 @@ public class MatchingController {
 
     // 유저 매칭 (1-3 매칭 -> 현재 유저와 다른 유저 매칭)
     @GetMapping("/rematching/{postIdx}")
-    public BaseResponse<UserResDto> getReMatching(@PathVariable("postIdx") int postIdx) {
+    public BaseResponse<MatchingResDto> getReMatching(@PathVariable("postIdx") int postIdx) {
         try {
-            UserResDto getMatching = matchingService.getReMatching(postIdx);
+            MatchingResDto getMatching = matchingService.getMatching(postIdx);
             return new BaseResponse<>(getMatching);
         } catch(BaseException e) {
             return new BaseResponse<>(e.getStatus());
