@@ -78,7 +78,9 @@ public enum BaseResponseStatus {
     // Chat
     CHAT_MEETTIME_ERROR(false,2044,"<만남시간>의 형식이 잘못되었습니다."),
 
-
+    // Matching
+    NO_USERS_MATCHING_CONDITION(false, 2050, "조건에 부합하는 유저가 없습니다."),
+    EXCEEDING_MATCHING_APPLICATION(false, 2051, "매칭 최대 신청 횟수 3회를 초과했습니다."),
     /**
      * 3000 : Response 오류
      */

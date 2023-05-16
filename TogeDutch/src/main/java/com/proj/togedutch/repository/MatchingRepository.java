@@ -9,6 +9,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.sql.Timestamp;
+import java.util.Optional;
 
 @Repository
 public interface MatchingRepository extends JpaRepository<Matching, Integer> {
@@ -35,7 +36,6 @@ public interface MatchingRepository extends JpaRepository<Matching, Integer> {
             "HAVING  distance <= 0.5 \n" +
             "ORDER BY distance asc limit 1", nativeQuery = true)
     MatchingUser findUserLivingNearBy(@Param("post") Post post, @Param("userIdx1") int userIdx1, @Param("userIdx2") int userIdx2);
-
 
     Matching findByPostIdx(int postIdx);
 
