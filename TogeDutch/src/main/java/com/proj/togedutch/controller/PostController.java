@@ -4,10 +4,7 @@ import com.proj.togedutch.config.BaseException;
 import com.proj.togedutch.config.BaseResponse;
 import com.proj.togedutch.config.BaseResponseStatus;
 import com.proj.togedutch.domain.Post;
-import com.proj.togedutch.dto.CategoryReqDto;
-import com.proj.togedutch.dto.ChatRoomDto;
-import com.proj.togedutch.dto.PostReqDto;
-import com.proj.togedutch.dto.PostResDto;
+import com.proj.togedutch.dto.*;
 import com.proj.togedutch.service.AWSS3Service;
 import com.proj.togedutch.service.ChatRoomService;
 import com.proj.togedutch.service.PostService;
@@ -208,15 +205,14 @@ public class PostController {
     }
 
     // 해당 공고에 참여중인 유저 전체 조회
-    // 아직 User DTO 생성 전이라 주석 처리
-//    @GetMapping("/users/{postIdx}")
-//    public BaseResponse<List<User>> getUsersInPost(@PathVariable("postIdx") int postIdx) throws BaseException {
-//        try{
-//            List<User> getUsersInPost = postService.getUsersInPost(postIdx);
-//            return new BaseResponse<>(getUsersInPost);
-//        } catch(BaseException e){
-//            e.printStackTrace();
-//            return new BaseResponse<>(e.getStatus());
-//        }
-//    }
+    @GetMapping("/users/{postIdx}")
+    public BaseResponse<List<UserResDto>> getUsersInPost(@PathVariable("postIdx") int postIdx) throws BaseException {
+        try{
+            List<UserResDto> getUsersInPost = postService.getUsersInPost(postIdx);
+            return new BaseResponse<>(getUsersInPost);
+        } catch(BaseException e){
+            e.printStackTrace();
+            return new BaseResponse<>(e.getStatus());
+        }
+    }
 }

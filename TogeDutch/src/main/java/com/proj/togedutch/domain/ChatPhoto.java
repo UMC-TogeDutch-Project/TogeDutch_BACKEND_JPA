@@ -1,5 +1,6 @@
 package com.proj.togedutch.domain;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.DynamicInsert;
@@ -31,4 +32,12 @@ public class ChatPhoto {
 
     @Column(name="created_at")
     private Timestamp createdAt;
+
+    // Dto to Entity
+    @Builder
+    public ChatPhoto(int chatRoomIdx, int userIdx, String image) {
+        this.chatRoomIdx = chatRoomIdx;
+        this.userIdx = userIdx;
+        this.image = image;
+    }
 }
