@@ -4,10 +4,13 @@ import com.proj.togedutch.config.BaseException;
 
 import com.proj.togedutch.config.BaseResponseStatus;
 import com.proj.togedutch.domain.Post;
+import com.proj.togedutch.domain.User;
 import com.proj.togedutch.dto.CategoryReqDto;
 import com.proj.togedutch.dto.PostReqDto;
 import com.proj.togedutch.dto.PostResDto;
+import com.proj.togedutch.dto.UserResDto;
 import com.proj.togedutch.repository.PostRepository;
+import com.proj.togedutch.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -123,14 +126,16 @@ public class PostService {
         return new PostResDto(getPost);
     }
 
-//    public List<User> getUsersInPost(int postIdx) throws BaseException {
-//        Post post = postRepository.findById(postIdx).orElseThrow(IllegalArgumentException::new);
-//        if(post.getStatus().equals("공고사용불가"))
-//            throw new BaseException(POST_NOT_ACCESSIBLE);
-//
-//        List<User> getUsersInPost = postRepository.findUsersInPost(postIdx);
-//        return getUsersInPost;
-//    }
+    public List<UserResDto> getUsersInPost(int postIdx) throws BaseException {
+        Post post = postRepository.findById(postIdx).orElseThrow(IllegalArgumentException::new);
+        if(post.getStatus().equals("공고사용불가"))
+            throw new BaseException(POST_NOT_ACCESSIBLE);
+
+        List<UserRepository.UserInfo> getUsersInPost = postRepository.findUsersInPost(postIdx);
+        return getUsersInPost.stream()
+                .map(m->new UserResDto(m))
+                .collect(Collectors.toList());
+    }
 
     public PostResDto getPostById(int postIdx) throws BaseException {
         Post getPost = postRepository.findById(postIdx)

@@ -1,6 +1,6 @@
 package com.proj.togedutch.service;
 
-import com.proj.togedutch.entity.EmailMessage;
+import com.proj.togedutch.domain.EmailMessage;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.mail.javamail.JavaMailSender;

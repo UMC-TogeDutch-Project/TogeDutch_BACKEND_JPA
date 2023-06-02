@@ -26,4 +26,36 @@ public class UserResDto {
     private double latitude;
     private double longitude;
     private String jwt;
+
+    // Entity to DTO
+    @Builder
+    public UserResDto(UserRepository.UserInfo user) {
+        this.userIdx = user.getUser_id();
+        this.keywordIdx = user.getKeyword_keyword_id();
+        this.name = user.getName();
+        this.role = user.getRole();
+        this.email = user.getEmail();
+        this.password = user.getPassword();
+        this.phone = user.getPhone();
+        this.image = user.getImage() == null ? null : imageConvert(user.getImage());
+        this.image = user.getImage();
+        this.status = user.getStatus();
+        this.created_at = user.getCreated_at();
+        this.updated_at = user.getUpdated_at();
+        this.latitude = user.getLatitude();
+        this.longitude = user.getLongitude();
+        this.jwt = null;
+    }
+
+    // ASCII TO String
+    public String imageConvert(String image) {
+        String[] byteStrings = image.split(",");
+        byte[] imageBytes = new byte[byteStrings.length];
+
+        for (int i = 0; i < byteStrings.length; i++) {
+            imageBytes[i] = Byte.parseByte(byteStrings[i].trim());
+        }
+
+        return new String(imageBytes);
+    }
 }

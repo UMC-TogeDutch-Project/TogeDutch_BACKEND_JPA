@@ -29,6 +29,7 @@ public class User {
 
     private String phone;
 
+    @Lob
     private String image;
 
     private String status; //일반 사용자 or 음식점 사장님
