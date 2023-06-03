@@ -2,6 +2,7 @@ package com.proj.togedutch.controller;
 
 import com.proj.togedutch.config.BaseException;
 import com.proj.togedutch.config.BaseResponse;
+import com.proj.togedutch.dto.ChatLocationDto;
 import com.proj.togedutch.dto.ChatPhotoDto;
 import com.proj.togedutch.service.AWSS3Service;
 import com.proj.togedutch.service.ChatService;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.List;
 
 @RestController
@@ -56,4 +58,39 @@ public class ChatController {
             return new BaseResponse<>(e.getStatus());
         }
     }
+
+    // 위도경도 위치 저장
+    @PostMapping("/chatLocation")
+    public BaseResponse<ChatLocationDto> postChatLocation(@PathVariable("chatRoom_id")int chatRoom_id, @RequestParam int user,
+                                                       @RequestParam BigDecimal latitude, @RequestParam BigDecimal longitude) {
+        try {
+            ChatLocationDto chatLocation = chatService.createChatLocation(chatRoom_id, user, latitude, longitude);
+            return new BaseResponse<>(chatLocation);
+        }catch (BaseException e){
+            return new BaseResponse<>(e.getStatus());
+        }
+    }
+
+    @GetMapping("/chatLocation/{chatLocation_id}")
+    public BaseResponse<ChatLocationDto> getChatLocation(@PathVariable("chatRoom_id")int chatRoom_id,
+                                                         @PathVariable("chatLocation_id")int chatLocationIdx) {
+        try {
+            ChatLocationDto chatLocation = chatService.getChatLocationById(chatRoom_id, chatLocationIdx);
+            return new BaseResponse<>(chatLocation);
+        } catch (BaseException e) {
+            return new BaseResponse<>(e.getStatus());
+        }
+    }
+    // 위치 정보 수정
+    @PutMapping("/chatLocation/{chatLocation_id}")
+    public BaseResponse<ChatLocationDto> putChatLocation(@PathVariable("chatRoom_id")int chatRoom_id, @PathVariable("chatLocation_id")int chatLocationIdx,
+                                                         @RequestParam BigDecimal latitude, @RequestParam BigDecimal longitude) {
+        try {
+            ChatLocationDto chatLocation = chatService.putChatLocation(chatRoom_id, chatLocationIdx, latitude, longitude);
+            return new BaseResponse<>(chatLocation);
+        } catch (BaseException e) {
+            return new BaseResponse<>(e.getStatus());
+        }
+    }
+
 }
