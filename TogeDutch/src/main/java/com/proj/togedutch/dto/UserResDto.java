@@ -38,7 +38,6 @@ public class UserResDto {
         this.password = user.getPassword();
         this.phone = user.getPhone();
         this.image = user.getImage() == null ? null : imageConvert(user.getImage());
-        this.image = user.getImage();
         this.status = user.getStatus();
         this.created_at = user.getCreated_at();
         this.updated_at = user.getUpdated_at();

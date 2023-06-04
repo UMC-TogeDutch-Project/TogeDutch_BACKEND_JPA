@@ -8,6 +8,10 @@ import com.proj.togedutch.dto.*;
 import com.proj.togedutch.service.AWSS3Service;
 import com.proj.togedutch.service.ChatRoomService;
 import com.proj.togedutch.service.PostService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,6 +25,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/post")
+@Api(tags = {"공고 API"})    // Swagger 최상단 Controller 명칭
 public class PostController {
     final Logger logger = LoggerFactory.getLogger(this.getClass());
     private final PostService postService;
@@ -31,6 +36,7 @@ public class PostController {
 
     // 공고 전체 조회
     @GetMapping("")
+    @ApiOperation(value = "공고 전체 조회", notes = "모든 공고를 조회합니다.")
     public BaseResponse<List<PostResDto>> getAllPosts() {
         try{
             List<PostResDto> getPostsRes = postService.findAll();
@@ -42,6 +48,12 @@ public class PostController {
 
     // 공고 생성 (채팅방도 생성)
     @PostMapping("")
+    @ApiOperation(value = "공고 생성", notes = "공고와 채팅방을 생성합니다.")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "user", value = "공고 생성자의 user_id"),
+            @ApiImplicitParam(name = "post", value = "공고 생성시 작성한 내용"),
+            @ApiImplicitParam(name = "file", value = "공고 생성시 첨부한 이미지")
+    })
     public BaseResponse<PostResDto> createPost(@RequestParam int user, @RequestPart PostReqDto post, @RequestPart(value="file", required = false) MultipartFile file) throws IOException {
         String fileUrl = null;
         int createPostIdx, insertIdx;
