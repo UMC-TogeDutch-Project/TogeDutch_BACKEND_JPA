@@ -103,6 +103,8 @@ public class PostController {
 
     // 공고 전체 조회 (최신순 / 주문임박)
     @GetMapping("/")
+    @ApiOperation(value = "공고 전체 조회 (최신순 / 주문임박)", notes = "파라미터 조건에 따라 최신순 / 주문임박 순으로 정렬하여 조회합니다.")
+    @ApiImplicitParam(name = "sort", value = "정렬 기준으로 latest는 최신순, imminent는 주문임박 순 의미")
     public BaseResponse<List<PostResDto>> getSortingPosts(@RequestParam String sort) {
         try {
             List<PostResDto> getPostsRes = postService.getSortingPosts(sort);
@@ -114,6 +116,11 @@ public class PostController {
 
     // 공고 특정 조회 (Post API 5 : 로그인 전과 로그인 후의 화면 버튼 달라짐)
     @GetMapping("/{postIdx}")
+    @ApiOperation(value = "공고 특정 조회", notes = "공고 id를 기준으로 특정 공고 조회합니다.")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "postIdx", value = "공고 생성시 부여된 id"),
+            @ApiImplicitParam(name = "user", value = "공고 생성자의 user_id")
+    })
     public BaseResponse<PostResDto> getPostByUserId(@PathVariable("postIdx") int postIdx, @RequestParam int user) {
         try{
             PostResDto getPost = postService.getPostByUserId(postIdx, user);
@@ -128,6 +135,13 @@ public class PostController {
 
     // 공고 수정
     @PutMapping("/{postIdx}")
+    @ApiOperation(value = "공고 수정", notes = "공고 생성시 부여된 id를 기준으로 특정 공고 수정합니다.")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "postIdx", value = "공고 생성시 부여된 id"),
+            @ApiImplicitParam(name = "post", value = "공고 수정시 작성한 내용"),
+            @ApiImplicitParam(name = "user", value = "공고 생성자의 user_id"),
+            @ApiImplicitParam(name = "file", value = "공고 수정시 첨부한 이미지")
+    })
     public BaseResponse<PostResDto> modifyPost(@PathVariable("postIdx") int postIdx, @RequestPart PostReqDto post,
                                          @RequestParam int user, @RequestPart MultipartFile file) throws Exception {
         String fileUrl;
@@ -181,6 +195,8 @@ public class PostController {
 
     // 공고 상태 변경
     @PutMapping("/status/{postIdx}")
+    @ApiOperation(value = "공고 상태 변경", notes = "공고 상태를 시간만료/모집완료/모집중/공고사용불가로 변경합니다.")
+    @ApiImplicitParam(name = "postIdx", value = "공고 생성시 부여된 id")
     public BaseResponse<PostResDto> modifyPostStatus(@PathVariable("postIdx") int postIdx) {
         try{
             PostResDto modifyPost = postService.modifyPostStatus(postIdx);
@@ -193,6 +209,8 @@ public class PostController {
     // 카테고리로 공고 조회
     // 파라미터를 기준으로 1km 이내의 공고 중 order_time이 유효하고, 아직 모집중인 상태의 공고 리스트 반환
     @PostMapping("/category")
+    @ApiOperation(value = "카테고리로 공고 조회", notes = "파라미터를 기준올 1km 이내의 공고 중 주문 시간이 유효하고, 아직 모집중인 상태의 공고들을 조회 합니다.")
+    @ApiImplicitParam(name = "categoryReqDto", value = "조회하고자 하는 카테고리 종류들")
     public BaseResponse<List<PostResDto>> getPostsByCategory(@RequestBody CategoryReqDto categoryReqDto) {
         if(categoryReqDto.getCategory1() == null)   // 카테고리를 아무것도 입력하지 않은 경우
             return new BaseResponse<>(BaseResponseStatus.NONE_INPUT_CATEGORY);
@@ -207,6 +225,8 @@ public class PostController {
 
     // 채팅방 아이디로 공고 조회
     @GetMapping("/chatRoom/{chatRoomIdx}")
+    @ApiOperation(value = "채팅방 아이디로 공고 조회", notes = "공고 마다 부여된 채팅방 id를 기준으로 특정 공고를 조회 합니다.")
+    @ApiImplicitParam(name = "chatRoomIdx", value = "채팅방 생성시 부여된 id")
     public BaseResponse<PostResDto> getPostByChatRoomId(@PathVariable int chatRoomIdx) {
         try{
             PostResDto getPost = postService.getPostByChatRoomId(chatRoomIdx);
@@ -218,6 +238,8 @@ public class PostController {
 
     // 해당 공고에 참여중인 유저 전체 조회
     @GetMapping("/users/{postIdx}")
+    @ApiOperation(value = "해당 공고에 참여중인 유저 전체 조회", notes = "특정 공고를 신청 후 수락되어 참여중인 유저들을 전체 조회 합니다.")
+    @ApiImplicitParam(name = "postIdx", value = "공고 생성시 부여된 id")
     public BaseResponse<List<UserResDto>> getUsersInPost(@PathVariable("postIdx") int postIdx) throws BaseException {
         try{
             List<UserResDto> getUsersInPost = postService.getUsersInPost(postIdx);
