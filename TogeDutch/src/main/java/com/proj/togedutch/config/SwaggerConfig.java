@@ -34,6 +34,8 @@ public class SwaggerConfig {
                 .build();
     }
 
+    /* Path에 파라미터 들어가면 regex 말고 ant 쓰기 */
+
     @Bean
     public Docket postAPI() {
         return getDocket("공고", Predicates.or(
