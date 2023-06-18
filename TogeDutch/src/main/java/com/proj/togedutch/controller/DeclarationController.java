@@ -13,7 +13,7 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/chatRoom")
+@RequestMapping("/jpa/chatRoom")
 public class DeclarationController {
     private final DeclarationService declarationService;
 

@@ -14,7 +14,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/user/{userIdx}/likePost")
+@RequestMapping("/jpa/user/{userIdx}/likePost")
 public class LikeUsersController {
     private final LikeUsersService likeUsersService;
     private final PostService postService;

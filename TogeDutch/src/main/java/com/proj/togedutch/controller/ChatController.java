@@ -17,7 +17,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/chatRoom/{chatRoom_id}")
+@RequestMapping("/jpa/chatRoom/{chatRoom_id}")
 public class ChatController {
     private final ChatService chatService;
     private final AWSS3Service awsS3Service;
