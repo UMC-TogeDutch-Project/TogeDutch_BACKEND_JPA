@@ -1,29 +1,21 @@
-// 프로젝트 플러그인 의존성 관리를 위한 설정
-buildscript{
-    // ext
-    // 1. build.gradle에서 사용하는 전역변수를 설정하겠다는 의미
-    // 2. springBootVersion 전역변수를 생성 및 값 설정 (AOP로 부여받겠다는 뜻)
-    ext{
-        springBootVersion = '2.1.7.RELEASE'
-    }
-    repositories{
-        mavenCentral()
-        jcenter()
-    }
-    dependencies{
-        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
-    }
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '2.7.12'
+    id 'io.spring.dependency-management' version '1.0.15.RELEASE'
 }
 
-// 자바와 스프링 부트를 사용하기 위한 필수 플러그인
-apply plugin: 'java'
-apply plugin: 'eclipse'
-apply plugin: 'org.springframework.boot'
-apply plugin: 'io.spring.dependency-management' // 필수 : 스프링 부트의 의존성을 관리하는 플러그인
+group = 'togetdutch'
+version = '0.0.1-SNAPSHOT'
 
-group 'org.example'
-version '1.0-SNAPSHOT'
-sourceCompatibility = '11'
+java {
+    sourceCompatibility = '11'
+}
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
 
 // repositories는 각종 의존성(라이브럴)를 어떤 원격 저장소에서 받을지를 정한다
 repositories {
@@ -33,7 +25,7 @@ repositories {
 
 // 프로젝트 개발에 필요한 의존성들을 선언하는 곳
 dependencies {
-    implementation 'mysql:mysql-connector-java'
+    runtimeOnly 'com.mysql:mysql-connector-j'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-web'
 
