@@ -42,6 +42,7 @@ dependencies {
     implementation 'commons-io:commons-io:2.11.0'    /* Apache commons-io */
     implementation group: 'commons-fileupload', name: 'commons-fileupload', version: '1.4'
     implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.8.1'
 
     compileOnly(group: 'io.jsonwebtoken', name: 'jjwt', version: '0.9.1')
     compileOnly('io.jsonwebtoken:jjwt:0.9.1')
