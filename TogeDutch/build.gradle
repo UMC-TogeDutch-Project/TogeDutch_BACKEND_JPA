@@ -42,6 +42,7 @@ dependencies {
     implementation 'commons-io:commons-io:2.11.0'    /* Apache commons-io */
     implementation group: 'commons-fileupload', name: 'commons-fileupload', version: '1.4'
     implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.8.1'
 
     compileOnly(group: 'io.jsonwebtoken', name: 'jjwt', version: '0.9.1')
     compileOnly('io.jsonwebtoken:jjwt:0.9.1')
@@ -59,6 +60,10 @@ dependencies {
     //https://mvnrepository.com/artifact/io.springfox/springfox-swagger-ui
     implementation group: 'io.springfox', name: 'springfox-swagger-ui', version: '2.9.2'
     implementation group: 'io.springfox', name: 'springfox-swagger2', version: '2.9.2'
+
+    // firebase
+    implementation 'com.google.firebase:firebase-admin:6.8.1'
+    implementation group: 'com.squareup.okhttp3', name: 'okhttp', version: '4.2.2'
 
     compileOnly 'org.projectlombok:lombok'
     runtimeOnly 'com.h2database:h2'

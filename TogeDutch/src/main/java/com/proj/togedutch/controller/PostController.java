@@ -24,7 +24,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/post")
+@RequestMapping("/jpa/post")
 @Api(tags = {"공고 API"})    // Swagger 최상단 Controller 명칭
 public class PostController {
     final Logger logger = LoggerFactory.getLogger(this.getClass());
