@@ -12,6 +12,7 @@ import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
+@SuppressWarnings("unchecked")
 @Configuration  // 스프링 실행 시 설정파일을 읽어들이기 위한 Annotation
 @EnableSwagger2 // Swagger2를 사용한다는 Annotation
 public class SwaggerConfig {

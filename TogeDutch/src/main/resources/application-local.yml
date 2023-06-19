@@ -2,18 +2,25 @@ spring:
   h2:
     console:
       enabled: true
-  datasource:
-    url: jdbc:h2:mem:test;DB_CLOSE_DELAY=-1
-    driver-class-name: org.h2.Driver
-    username: sa
-    password:
-  jpa:
-    hibernate:
-      ddl-auto: none
-    properties:
+    datasource:
+      url: jdbc:h2:mem:test;DB_CLOSE_DELAY=-1
+      driver-class-name: org.h2.Driver
+      username: sa
+      password:
+    jpa:
       hibernate:
-        dialect: org.hibernate.dialect.H2Dialect
-        default_batch_fetch_size: 1000
+        ddl-auto: create
+      properties:
+        hibernate:
+          dialect: org.hibernate.dialect.H2Dialect
+          default_batch_fetch_size: 1000
+
+  # file upload max size
+  servlet:
+    multipart:
+      maxFileSize: 5MB
+      maxRequestSize: 10MB
+
   jackson:
     timeZone: Asia/Seoul
     dateFormat: yyyy-MM-dd HH:mm:ss
@@ -21,5 +28,11 @@ spring:
   config:
     activate:
       on-profile: local
-    import:
-      application-secret.yml
+    import: application-secret.yml
+
+server:
+  servlet:
+    encoding:
+      charset: UTF-8
+      enabled: true
+      force: true
