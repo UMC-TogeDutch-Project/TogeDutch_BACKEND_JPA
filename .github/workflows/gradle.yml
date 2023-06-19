@@ -78,7 +78,8 @@ jobs:
         echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
         docker build -f Dockerfile -t ${{ secrets.DOCKER_USERNAME }}/togedutch .
         docker push ${{ secrets.DOCKER_USERNAME }}/togedutch
-        
+      
+            
     ## deploy to production
     - name: Deploy to prod
       uses: appleboy/ssh-action@master
@@ -91,7 +92,7 @@ jobs:
           envs: GITHUB_SHA
           script: |
               sudo docker rm -f $(docker ps -qa)
-              sudo docker pull ${{ secrets.DOCKER_REPO }}/togedutch
+              sudo docker pull ${{ secrets.DOCKER_USERNAME }}/togedutch
               docker-compose up -d
               docker image prune -f
         
