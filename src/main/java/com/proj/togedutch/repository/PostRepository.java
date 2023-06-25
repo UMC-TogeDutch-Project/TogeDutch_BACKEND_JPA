@@ -68,4 +68,6 @@ public interface PostRepository extends JpaRepository<Post, Integer> {
 
     @Query(value = "select * From Post where post_id In( select Post_post_id from Application where User_user_id = ? )", nativeQuery = true)
     List<Post> findPostsByJoinApplicationUserId(int user_id);
+
+    List<Post> findPostsByTitleContainsAndTitleNotLike(String Keyword, String word);
 }

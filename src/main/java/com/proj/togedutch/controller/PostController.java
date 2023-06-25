@@ -282,4 +282,14 @@ public class PostController {
             return new BaseResponse<>(e.getStatus());
         }
     }
+    @ResponseBody
+    @GetMapping("/search")
+    public BaseResponse<List<Post>> getPostByTitleUserId(@RequestParam String keyword) throws BaseException {
+        try {
+            List<Post> getPost = postService.findPostsTitleContainsAndTitleNotLike(keyword);
+            return new BaseResponse<>(getPost);
+        } catch(BaseException e) {
+            return new BaseResponse<>(e.getStatus());
+        }
+    }
 }

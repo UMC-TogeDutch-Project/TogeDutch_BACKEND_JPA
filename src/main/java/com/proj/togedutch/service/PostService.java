@@ -176,4 +176,13 @@ public class PostService {
             throw new BaseException(DATABASE_ERROR);
         }
     }
+    public List<Post> findPostsTitleContainsAndTitleNotLike(String keyword) throws BaseException {
+        try{
+            List<Post> post = postRepository.findPostsByTitleContainsAndTitleNotLike(keyword,"\"공고사용불가\"");
+            return post;
+        } catch(Exception e){
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
+
 }
