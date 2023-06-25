@@ -85,4 +85,17 @@ public class User {
         this.userIdx = userIdx;
         this.name = name;
     }
+
+    public User(int keywordIdx, String name, String role, String email, String password, String phone, String image, String status, double latitude, double longitude) {
+        this.keywordIdx = keywordIdx;
+        this.name = name;
+        this.role = role;
+        this.email = email;
+        this.password = password;
+        this.phone = phone;
+        this.image = image;
+        this.status = status;
+        this.latitude = latitude;
+        this.longitude = longitude;
+    }
 }

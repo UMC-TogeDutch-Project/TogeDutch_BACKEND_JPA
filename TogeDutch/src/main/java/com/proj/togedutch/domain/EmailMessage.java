@@ -1,4 +1,4 @@
-package com.proj.togedutch.entity;
+package com.proj.togedutch.domain;
 
 import lombok.Builder;
 import lombok.Data;
