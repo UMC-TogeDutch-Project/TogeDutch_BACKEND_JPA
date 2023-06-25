@@ -1,33 +1,25 @@
-package com.proj.togedutch.domain;
+package com.proj.togedutch.dto;
 
-import lombok.Data;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-import javax.persistence.*;
-
-@Data
-@Entity
-@Table(name="Keyword")
+@Getter
+@Setter
+@AllArgsConstructor
 @NoArgsConstructor
-public class Keyword {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="Keyword_id")
+public class KeywordResDto {
     private int keywordIdx;
-
     private String word1;
-
     private String word2;
-
     private String word3;
-
     private String word4;
-
     private String word5;
-
     private String word6;
 
-    public Keyword(String word1, String word2, String word3, String word4, String word5, String word6) {
+    public KeywordResDto(int keywordIdx, String word1, String word2, String word3, String word4, String word5, String word6) {
+        this.keywordIdx = keywordIdx;
         this.word1 = word1;
         this.word2 = word2;
         this.word3 = word3;
