@@ -249,4 +249,25 @@ public class PostController {
             return new BaseResponse<>(e.getStatus());
         }
     }
+
+    @ResponseBody
+    @DeleteMapping("/delete/{postIdx}")
+    public int deletePost(@PathVariable("postIdx") int postIdx) throws Exception {
+
+        int deletePost = postService.deletePost(postIdx);
+        logger.info("Delete success");
+        return deletePost;
+
+    }
+
+    @ResponseBody
+    @GetMapping("/join/{userIdx}")
+    public BaseResponse<List<Post>> getPostByJoinUserId(@PathVariable("userIdx") int userIdx) throws BaseException {
+        try {
+            List<Post> getPost = postService.getPostByJoinUserId(userIdx);
+            return new BaseResponse<>(getPost);
+        } catch(BaseException e) {
+            return new BaseResponse<>(e.getStatus());
+        }
+    }
 }
