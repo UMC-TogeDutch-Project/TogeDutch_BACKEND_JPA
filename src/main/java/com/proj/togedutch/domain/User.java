@@ -2,6 +2,8 @@ package com.proj.togedutch.domain;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
@@ -33,15 +35,15 @@ public class User {
 
     private String status; //일반 사용자 or 음식점 사장님
 
+    @CreationTimestamp
     private Timestamp created_at;
 
+    @UpdateTimestamp
     private Timestamp updated_at;
 
     private double latitude;
 
     private double longitude;
-
-    private String jwt;
 
     public User(int userIdx, int keywordIdx, String name, String role, String email, String password, String phone, String image, String status, Timestamp created_at, Timestamp updated_at, double latitude, double longitude) {
         this.userIdx = userIdx;

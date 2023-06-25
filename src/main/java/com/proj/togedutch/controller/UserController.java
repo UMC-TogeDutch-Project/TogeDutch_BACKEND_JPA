@@ -212,6 +212,7 @@ public class UserController {
             else
                 return new BaseResponse<>("fail");
         } catch (BaseException e) {
+            e.printStackTrace();
             return new BaseResponse<>(e.getStatus());
         }
     }
