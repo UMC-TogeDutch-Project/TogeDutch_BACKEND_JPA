@@ -168,4 +168,12 @@ public class PostService {
             throw new BaseException(DATABASE_ERROR);
         }
     }
+    public List<Post> getPostByUploadUserId(int userIdx) throws BaseException {
+        try{
+            List<Post> UploadPost = postRepository.findPostsByUserIdx(userIdx);
+            return UploadPost;
+        } catch(Exception e){
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
 }

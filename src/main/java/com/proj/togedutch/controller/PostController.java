@@ -270,4 +270,16 @@ public class PostController {
             return new BaseResponse<>(e.getStatus());
         }
     }
+
+    //공고 내가 업로드
+    @ResponseBody
+    @GetMapping("/all/{userIdx}")
+    public BaseResponse<List<Post>> getPostBuUploadUserId(@PathVariable("userIdx") int userIdx) throws BaseException {
+        try {
+            List<Post> getPost = postService.getPostByUploadUserId(userIdx);
+            return new BaseResponse<>(getPost);
+        } catch(BaseException e) {
+            return new BaseResponse<>(e.getStatus());
+        }
+    }
 }
