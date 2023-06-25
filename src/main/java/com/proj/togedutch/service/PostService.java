@@ -21,8 +21,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import static com.proj.togedutch.config.BaseResponseStatus.FAILED_TO_FIND_BY_CATEGORY;
-import static com.proj.togedutch.config.BaseResponseStatus.POST_NOT_ACCESSIBLE;
+import static com.proj.togedutch.config.BaseResponseStatus.*;
 
 
 @RequiredArgsConstructor
@@ -143,4 +142,30 @@ public class PostService {
         return new PostResDto(getPost);
     }
 
+    public List<Post> getPostByUserId(int userid) throws BaseException{
+        return postRepository.findPostsByUserIdx(userid);
+
+    }
+
+    public int deletePost(int postIdx) throws BaseException {
+        try{
+            Post post = postRepository.findById(postIdx)
+                    .orElseThrow(IllegalArgumentException::new);
+            post.updateStatusPost();
+            Post deletePost = postRepository.save(post);
+            if(deletePost != null)
+                return 1;
+            else return 0;
+        } catch(Exception e){
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
+    public List<Post> getPostByJoinUserId(int userIdx) throws BaseException {
+        try{
+            List<Post> joinPost = postRepository.findPostsByJoinApplicationUserId(userIdx);
+            return joinPost;
+        } catch(Exception e){
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
 }
