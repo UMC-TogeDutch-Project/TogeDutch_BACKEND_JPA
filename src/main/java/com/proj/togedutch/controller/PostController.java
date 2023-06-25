@@ -292,4 +292,14 @@ public class PostController {
             return new BaseResponse<>(e.getStatus());
         }
     }
+    @ResponseBody
+    @GetMapping("/postId/{postIdx}")
+    public BaseResponse <Post> getPostByPostId(@PathVariable("postIdx") int postIdx) throws BaseException {
+        try {
+            Post getPost = postService.getPostByPostId(postIdx);
+            return new BaseResponse<>(getPost);
+        } catch(BaseException e) {
+            return new BaseResponse<>(e.getStatus());
+        }
+    }
 }

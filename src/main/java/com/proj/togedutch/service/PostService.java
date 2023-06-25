@@ -184,5 +184,13 @@ public class PostService {
             throw new BaseException(DATABASE_ERROR);
         }
     }
+    public Post getPostByPostId(int postIdx) throws BaseException {
+        try{
+            Post post = postRepository.findById(postIdx).orElseThrow(() -> new IllegalArgumentException("해당 공고 존재하지 않습니다"));
+            return post;
+        } catch(Exception e){
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
 
 }
