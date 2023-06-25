@@ -168,4 +168,29 @@ public class PostService {
             throw new BaseException(DATABASE_ERROR);
         }
     }
+    public List<Post> getPostByUploadUserId(int userIdx) throws BaseException {
+        try{
+            List<Post> UploadPost = postRepository.findPostsByUserIdx(userIdx);
+            return UploadPost;
+        } catch(Exception e){
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
+    public List<Post> findPostsTitleContainsAndTitleNotLike(String keyword) throws BaseException {
+        try{
+            List<Post> post = postRepository.findPostsByTitleContainsAndTitleNotLike(keyword,"\"공고사용불가\"");
+            return post;
+        } catch(Exception e){
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
+    public Post getPostByPostId(int postIdx) throws BaseException {
+        try{
+            Post post = postRepository.findById(postIdx).orElseThrow(() -> new IllegalArgumentException("해당 공고 존재하지 않습니다"));
+            return post;
+        } catch(Exception e){
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
+
 }
