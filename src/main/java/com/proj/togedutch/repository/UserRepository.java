@@ -34,5 +34,5 @@ public interface UserRepository extends JpaRepository<User, Integer> {
     }
     public User findUserByEmail(String email);
     public User findUserByUserIdx(int userIdx);
-    public List<User> findAllUser();
+    //public List<User> findAllUser();
 }
