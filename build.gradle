@@ -10,7 +10,6 @@ version = '0.0.1-SNAPSHOT'
 java {
     sourceCompatibility = '11'
 }
-
 // 빌드 시 plain jar 생성하지 않도록 설정
 jar {
     enabled = false

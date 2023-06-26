@@ -24,6 +24,12 @@ public class ChatController {
     @Value("${cloud.aws.url}")
     private String url;
 
+    //채팅 가져오기
+
+    //채팅 저장
+
+    //채팅 내용 가져오기
+
     // 채팅이미지 생성
     @PostMapping("/chatPhoto")
     public BaseResponse<ChatPhotoDto> PostChatPhoto(@PathVariable("chatRoom_id") int chatRoomId, @RequestParam int user, @RequestPart MultipartFile file) throws IOException {

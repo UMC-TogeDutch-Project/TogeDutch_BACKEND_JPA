@@ -24,6 +24,9 @@ public class ChatService {
     private final ChatLocationRepository chatLocationRepository;
     private final ChatMessageRepository chatMessageRepository;
 
+    // 채팅 메세지 조회
+
+
     // 채팅 이미지 생성
     public ChatPhotoDto createChatPhoto(int chatRoomIdx, int userIdx, String file) throws BaseException {
         // Dto to Entity
