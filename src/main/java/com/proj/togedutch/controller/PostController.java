@@ -249,4 +249,57 @@ public class PostController {
             return new BaseResponse<>(e.getStatus());
         }
     }
+
+    @ResponseBody
+    @DeleteMapping("/delete/{postIdx}")
+    public int deletePost(@PathVariable("postIdx") int postIdx) throws Exception {
+
+        int deletePost = postService.deletePost(postIdx);
+        logger.info("Delete success");
+        return deletePost;
+
+    }
+
+    @ResponseBody
+    @GetMapping("/join/{userIdx}")
+    public BaseResponse<List<Post>> getPostByJoinUserId(@PathVariable("userIdx") int userIdx) throws BaseException {
+        try {
+            List<Post> getPost = postService.getPostByJoinUserId(userIdx);
+            return new BaseResponse<>(getPost);
+        } catch(BaseException e) {
+            return new BaseResponse<>(e.getStatus());
+        }
+    }
+
+    //공고 내가 업로드
+    @ResponseBody
+    @GetMapping("/all/{userIdx}")
+    public BaseResponse<List<Post>> getPostBuUploadUserId(@PathVariable("userIdx") int userIdx) throws BaseException {
+        try {
+            List<Post> getPost = postService.getPostByUploadUserId(userIdx);
+            return new BaseResponse<>(getPost);
+        } catch(BaseException e) {
+            return new BaseResponse<>(e.getStatus());
+        }
+    }
+    @ResponseBody
+    @GetMapping("/search")
+    public BaseResponse<List<Post>> getPostByTitleUserId(@RequestParam String keyword) throws BaseException {
+        try {
+            List<Post> getPost = postService.findPostsTitleContainsAndTitleNotLike(keyword);
+            return new BaseResponse<>(getPost);
+        } catch(BaseException e) {
+            return new BaseResponse<>(e.getStatus());
+        }
+    }
+    @ResponseBody
+    @GetMapping("/postId/{postIdx}")
+    public BaseResponse <Post> getPostByPostId(@PathVariable("postIdx") int postIdx) throws BaseException {
+        try {
+            Post getPost = postService.getPostByPostId(postIdx);
+            return new BaseResponse<>(getPost);
+        } catch(BaseException e) {
+            return new BaseResponse<>(e.getStatus());
+        }
+    }
 }

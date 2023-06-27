@@ -46,6 +46,23 @@ public class UserResDto {
         this.jwt = null;
     }
 
+    public UserResDto(int userIdx, int keywordIdx, String name, String role, String email, String password, String phone, String image, String status, Timestamp created_at, Timestamp updated_at, double latitude, double longitude) {
+        this.userIdx = userIdx;
+        this.keywordIdx = keywordIdx;
+        this.name = name;
+        this.role = role;
+        this.email = email;
+        this.password = password;
+        this.phone = phone;
+        this.image = image;
+        this.status = status;
+        this.created_at = created_at;
+        this.updated_at = updated_at;
+        this.latitude = latitude;
+        this.longitude = longitude;
+    }
+
+
     // ASCII TO String
     public String imageConvert(String image) {
         String[] byteStrings = image.split(",");

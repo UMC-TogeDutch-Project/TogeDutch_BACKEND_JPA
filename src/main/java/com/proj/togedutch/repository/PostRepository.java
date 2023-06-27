@@ -63,4 +63,11 @@ public interface PostRepository extends JpaRepository<Post, Integer> {
     @Query(value = "select * from Post p where p.post_id IN " +
             "(select l.Post_post_id from LikeUsers l where l.User_user_id = :userIdx and p.status != \"공고사용불가\" )", nativeQuery = true)
     List<Post> findLikePostByUserIdx(@Param("userIdx") int userIdx);
+
+    List<Post> findPostsByUserIdx(int User_user_id);
+
+    @Query(value = "select * From Post where post_id In( select Post_post_id from Application where User_user_id = ? )", nativeQuery = true)
+    List<Post> findPostsByJoinApplicationUserId(int user_id);
+
+    List<Post> findPostsByTitleContainsAndTitleNotLike(String Keyword, String word);
 }

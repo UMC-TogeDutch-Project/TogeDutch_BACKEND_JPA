@@ -101,4 +101,9 @@ public class Post {
         this.category = post.getCategory();
         this.image = fileUrl;
     }
+    public void updateStatusPost(){
+
+        this.status = "공고사용불가";
+
+    }
 }

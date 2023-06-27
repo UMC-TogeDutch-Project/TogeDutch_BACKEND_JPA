@@ -8,6 +8,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, Integer> {
@@ -31,4 +32,7 @@ public interface UserRepository extends JpaRepository<User, Integer> {
         Double getLatitude();
         Double getLongitude();
     }
+    public User findUserByEmail(String email);
+    public User findUserByUserIdx(int userIdx);
+    //public List<User> findAllUser();
 }
