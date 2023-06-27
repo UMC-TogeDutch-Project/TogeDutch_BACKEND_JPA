@@ -45,3 +45,5 @@ public class ChatRoomOfUser {
         this.updated_at = updated_at;
     }
 }
+
+

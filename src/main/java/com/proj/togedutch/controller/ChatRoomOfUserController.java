@@ -42,75 +42,35 @@ public class ChatRoomOfUserController {
         return new BaseResponse<>(chatRoomOfUserService.getChatRoomOfUsers(chatRoom_id));
     }
 
-//    @PutMapping("/{chatRoom_id}/user_id/in")
+    // 현재 채팅방안에서 채팅을 보는중
+    @PutMapping("/{chatRoom_id}/user/{user_id}/in")
+    public BaseResponse<ChatRoomOfUserResDto> inChatRoomUser(@PathVariable("chatRoom_id") int chatRoomIdx, @PathVariable("user_id") int userId){
+        try {
+            ChatRoomOfUserResDto chatRoomUser = chatRoomOfUserService.inChatRoomUser(chatRoomIdx,userId);
+            return new BaseResponse<>(chatRoomUser);
+        }catch (BaseException e){
+            return new BaseResponse<>(e.getStatus());
+        }
+    }
 
+    //현재 채팅방에 없는 경우
+    @PutMapping("/{chatRoom_id}/user/{user_id}/out")
+    public BaseResponse<ChatRoomOfUserResDto> outChatRoomUser(@PathVariable("chatRoom_id") int chatRoomIdx, @PathVariable("user_id") int userId){
+        try {
+            ChatRoomOfUserResDto chatRoomUser = chatRoomOfUserService.outChatRoomUser(chatRoomIdx,userId);
+            return new BaseResponse<>(chatRoomUser);
+        }catch (BaseException e){
+            return new BaseResponse<>(e.getStatus());
+        }
+    }
 
-
-//    // 채팅방에 유저 추가
-//    @PostMapping("/{chatRoom_id}/user/{user_id}")
-//    public BaseResponse<ChatRoomUser> inviteUserController (@PathVariable("chatRoom_id") int chatRoomIdx, @PathVariable("user_id") int userId) throws Exception{
-//        try{
-//            ChatRoomOfUser chatRoomUser = chatRoomOfUserService.inviteUser(chatRoomIdx,userId);
-//            return new BaseResponse<>(chatRoomUser);
-//        } catch (BaseException e){
-//            return new BaseResponse<>(e.getStatus());
-//        }
-//    }
-//
-//    // 채팅방에 존재하는 있는 유저모두 출력
-//    @GetMapping("/{chatRoom_id}/users")
-//    public BaseResponse<List<ChatRoomUser>> getChatRoomUsers(@PathVariable("chatRoom_id") int chatRoomIdx) throws Exception{
-//        try {
-//            List<ChatRoomUser> chatRoomUsers = chatRoomService.getChatRoomUsers(chatRoomIdx);
-//            return new BaseResponse<>(chatRoomUsers);
-//        } catch (BaseException e){
-//            return new BaseResponse<>(e.getStatus());
-//        }
-//    }
-//
-//    // 현재 채팅방안에서 채팅을 보는중
-//    @PutMapping("/{chatRoom_id}/user/{user_id}/in")
-//    public BaseResponse<ChatRoomUser> inChatRoomUser(@PathVariable("chatRoom_id") int chatRoomIdx, @PathVariable("user_id") int userId){
-//        try{
-//            ChatRoomUser chatRoomUser = chatRoomService.inChatRoomUser(chatRoomIdx,userId);
-//            return new BaseResponse<>(chatRoomUser);
-//        } catch (BaseException e) {
-//            return new BaseResponse<>(e.getStatus());
-//        }
-//    }
-//
-//    // 현재 채팅방을 보지 않는 중
-//    @PutMapping("/{chatRoom_id}/user/{user_id}/out")
-//    public BaseResponse<ChatRoomUser> outChatRoomUser(@PathVariable("chatRoom_id") int chatRoomIdx, @PathVariable("user_id") int userId){
-//        try{
-//            ChatRoomUser chatRoomUser = chatRoomService.outChatRoomUser(chatRoomIdx,userId);
-//            return new BaseResponse<>(chatRoomUser);
-//        } catch (BaseException e) {
-//            return new BaseResponse<>(e.getStatus());
-//        }
-//    }
-//
-//    // 채팅방 나가기
-//    @DeleteMapping("/{chatRoom_id}/user/{user_id}/leave")
-//    public BaseResponse<Integer> leaveChatRoomUser (@PathVariable("chatRoom_id") int chatRoomIdx, @PathVariable("user_id") int userId) throws Exception{
-//        try{
-//            int chatRoomUser = chatRoomService.leaveChatRoomUser(chatRoomIdx,userId);
-//            return new BaseResponse<>(chatRoomUser);
-//        } catch (BaseException e){
-//            return new BaseResponse<>(e.getStatus());
-//        }
-//    }
-//
-//    // 채팅방에 존재하는 한명의 유저 정보
-//    @GetMapping("/{chatRoom_id}/user/{user_id}")
-//    public BaseResponse<ChatRoomUser> getChatRoomUser(@PathVariable("chatRoom_id") int chatRoomIdx, @PathVariable("user_id") int userId) throws Exception{
-//        try {
-//            ChatRoomUser chatRoomUser = chatRoomService.getChatRoomUser(chatRoomIdx,userId);
-//            return new BaseResponse<>(chatRoomUser);
-//        } catch (BaseException e){
-//            return new BaseResponse<>(e.getStatus());
-//        }
-//    }
-
-
+    @DeleteMapping("/{chatRoom_id}/user/{user_id}/leave")
+    public BaseResponse<Integer> leaveChatRoomUser(@PathVariable("chatRoom_id") int chatRoomIdx, @PathVariable("user_id") int userId){
+        try{
+            int chatRoomUser = chatRoomOfUserService.leaveChatRoomUser(chatRoomIdx,userId);
+            return new BaseResponse<>(chatRoomUser);
+        } catch (BaseException e){
+            return new BaseResponse<>(e.getStatus());
+        }
+    }
 }
