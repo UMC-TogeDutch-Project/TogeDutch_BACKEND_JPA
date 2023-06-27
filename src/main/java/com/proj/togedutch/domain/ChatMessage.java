@@ -3,11 +3,13 @@ package com.proj.togedutch.domain;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
 
 @Getter
+@Setter
 @Entity
 @Table(name="Chat")
 public class ChatMessage {
@@ -34,6 +36,8 @@ public class ChatMessage {
     @Transient
     private String writer;
 
+    @Transient
+    @Enumerated(EnumType.STRING)
     private MessageType type;
 
     @Builder

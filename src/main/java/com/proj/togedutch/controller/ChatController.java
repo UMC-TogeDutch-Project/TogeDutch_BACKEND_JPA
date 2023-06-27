@@ -2,7 +2,9 @@ package com.proj.togedutch.controller;
 
 import com.proj.togedutch.config.BaseException;
 import com.proj.togedutch.config.BaseResponse;
+import com.proj.togedutch.domain.ChatMessage;
 import com.proj.togedutch.dto.ChatLocationDto;
+import com.proj.togedutch.dto.ChatMessageDto;
 import com.proj.togedutch.dto.ChatPhotoDto;
 import com.proj.togedutch.service.AWSS3Service;
 import com.proj.togedutch.service.ChatService;
@@ -24,11 +26,16 @@ public class ChatController {
     @Value("${cloud.aws.url}")
     private String url;
 
-    //채팅 가져오기
-
-    //채팅 저장
-
     //채팅 내용 가져오기
+    @GetMapping("/conversation")
+    public BaseResponse<List<ChatMessageDto>> getChatMessages(@PathVariable("chatRoom_id") int chatRoomId) throws BaseException {
+        try{
+            List<ChatMessageDto> chatMessages = chatService.getChatMessages(chatRoomId);
+            return new BaseResponse<>(chatMessages);
+        } catch (BaseException e){
+            return new BaseResponse<>(e.getStatus());
+        }
+    }
 
     // 채팅이미지 생성
     @PostMapping("/chatPhoto")
