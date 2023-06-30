@@ -127,8 +127,8 @@ public enum BaseResponseStatus {
     DELETE_FAIL_USER(false,4020,"유저 삭제 실패"),
 
     DUPLICATE_KEY_ORROR (false,4021,"동일한 유저가 존재합니다."),
-    FOREIGN_KEY_ORROR (false,4021,"유저가 없거나, 채팅방이 존재하지 않습니다."),
-
+    FOREIGN_KEY_ORROR (false,4022,"유저가 없거나, 채팅방이 존재하지 않습니다."),
+    NO_USER_ERROR (false,4023,"유저가 없습니다."),
 
     /**
      * 5000 : 필요시 만들어서 쓰세요

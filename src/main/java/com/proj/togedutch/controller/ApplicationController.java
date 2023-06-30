@@ -143,7 +143,7 @@ public class ApplicationController {
         }
     }
 //
-//
+
 //    @GetMapping("/application/waiting/{userIdx}")
 //    public BaseResponse<List<ApplicationWaiting>> getApplicationWaitings(@PathVariable int userIdx) throws BaseException {
 //        try{

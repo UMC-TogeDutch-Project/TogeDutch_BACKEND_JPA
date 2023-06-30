@@ -18,6 +18,7 @@ import com.proj.togedutch.utils.JwtService;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static com.proj.togedutch.config.BaseResponseStatus.*;
 
@@ -144,7 +145,6 @@ public class ApplicationService {
         try {
             List<Application> joinApplication = applicationRepository.findAllByUserIdx(userIdx);
 
-
             List<ApplicationResDto> joinApplicationResDtos = new ArrayList<>();
             for (int i = 0; i < joinApplication.size(); i++) {
                 joinApplicationResDtos.add(new ApplicationResDto(joinApplication.get(i)));
@@ -175,18 +175,24 @@ public class ApplicationService {
 
     //채팅방 전체 조회 (내가 참여)
     public List<ChatRoomDto> getChatRoomByJoinUserId(int userIdx) throws BaseException {
+
+        //유저아이디 값이 어플리케이션에 없으면 에러
         try {
-            String accept="수락완료";
-            List<ChatRoom> joinChatRoom = applicationRepository.findChatRoomByJoinUserId(userIdx,accept);
-
-            List<ChatRoomDto> list = new ArrayList<ChatRoomDto>();
-            for(ChatRoom c : joinChatRoom) {
-                list.add(new ChatRoomDto(c));
-            }
-            return list;
-
-
+            applicationRepository.findById(userIdx);
         } catch (Exception e) {
+            e.printStackTrace();
+            throw new BaseException(NO_USER_ERROR);
+        }
+
+
+        try{
+            String accept="수락완료";
+            List<ApplicationRepository.BelongChatRoom> joinChatRoom = applicationRepository.findChatRoomByJoinUserId(userIdx,userIdx,accept);
+
+            return joinChatRoom.stream()
+                .map(m->new ChatRoomDto(m))
+                .collect(Collectors.toList());
+        }catch (Exception e){
             throw new BaseException(DATABASE_ERROR);
         }
     }
@@ -207,8 +213,8 @@ public class ApplicationService {
             throw new BaseException(DATABASE_ERROR);
         }
     }
-
-//    // 채팅방 삭제 후 Application의 chatRoom_id로 null로 변경
+//
+//     //채팅방 삭제 후 Application의 chatRoom_id로 null로 변경
 //    public int modifyApplicationByChatRoomId(int chatRoomIdx) throws BaseException {
 //        try {
 //            //int result = applicationRepository.modifyApplicationByChatRoomId(chatRoomIdx);

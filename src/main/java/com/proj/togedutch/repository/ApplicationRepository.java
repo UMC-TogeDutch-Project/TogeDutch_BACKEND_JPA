@@ -7,8 +7,10 @@ import com.proj.togedutch.domain.Post;
 import com.proj.togedutch.dto.ApplicationResDto;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 @Repository
@@ -24,7 +26,12 @@ public interface ApplicationRepository extends JpaRepository<Application, Intege
 
 
 
-    @Query(value = "select * From ChatRoom c where c.chatRoom_id In ( select a.ChatRoom_chatRoom_id from Application a where (a.User_user_id = :userIdx or a.Post_User_user_id = :userIdx) and a.status = :accept)", nativeQuery = true)
-    List <ChatRoom> findChatRoomByJoinUserId(int userIdx,String accept);
+    @Query(value = "select * From ChatRoom c where c.chatRoom_id In ( select a.ChatRoom_chatRoom_id from Application a where (a.User_user_id = ? or a.Post_User_user_id = ?) and a.status = ?)", nativeQuery = true)
+    List<BelongChatRoom> findChatRoomByJoinUserId( int userIdx,int userIdx2, String accept);
+    interface BelongChatRoom {
+        int getChatRoom_id();
+        Timestamp getCreated_at();
+    }
+
 
 }
