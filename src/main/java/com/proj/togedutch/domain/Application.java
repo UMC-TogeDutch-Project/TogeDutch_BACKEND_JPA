@@ -4,12 +4,14 @@ package com.proj.togedutch.domain;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 
 @Getter
+@Setter
 @NoArgsConstructor
 @Entity
 @DynamicInsert
@@ -56,4 +58,14 @@ public class Application {
         this.chatRoomIdx = chatRoomIdx;
         this.userIdx = userIdx;
     }
+
+
+    public void modifyApplication(String status){
+        this.status=status;
+    }
+
+    public void modifyChatRoomStatus(){
+        this.chatRoomIdx = Integer.parseInt(null);
+    }
+
 }

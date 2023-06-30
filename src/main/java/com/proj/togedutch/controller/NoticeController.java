@@ -23,18 +23,14 @@ public class NoticeController {
     @PostMapping("")
     public BaseResponse<NoticeResDto> createNotice(@RequestBody NoticeReqDto noticeReqDto) throws BaseException{
         //NoticeReqDto noticeReqDto = new NoticeReqDto(content, title);
-        System.out.println("로그");
         if(noticeReqDto.getTitle() == null){
-            log.info("여기?");
             return new BaseResponse<>(BaseResponseStatus.POST_NOTICE_EMPTY_TITLE);
         }
         if(noticeReqDto.getContent() == null){
-            log.info("저기?");
             return new BaseResponse<>(BaseResponseStatus.POST_NOTICE_EMPTY_CONTENT);
         }
 
         try {
-            log.info("?");
             NoticeResDto noticeResDto = noticeService.createNotice(noticeReqDto);
             return new BaseResponse<>(noticeResDto);
         } catch (BaseException e) {
@@ -69,7 +65,6 @@ public class NoticeController {
     public int deleteNotice(@PathVariable("noticeIdx") int noticeIdx) throws BaseException {
         try{
             int deleteNotice = noticeService.deleteNotice(noticeIdx);
-            log.info("Delete success");
             return deleteNotice;
         } catch (BaseException e) {
             return new BaseResponse<>(e.getStatus()).getCode();

@@ -30,4 +30,5 @@ public class ChatRoomDto {
                 .createdAt(createdAt)
                 .build();
     }
+
 }

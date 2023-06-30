@@ -104,6 +104,9 @@ public class Post {
     public void updateStatusPost(){
 
         this.status = "공고사용불가";
+    }
 
+    public void modifyStatusPost(String status){
+        this.status=status;
     }
 }
