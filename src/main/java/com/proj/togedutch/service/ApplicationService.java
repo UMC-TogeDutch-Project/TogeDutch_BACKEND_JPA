@@ -249,7 +249,7 @@ public class ApplicationService {
 //    }
 
 
-    // 공지사항 삭제
+    // 신청 삭제
     public int deleteApplication(int applicationIdx) throws BaseException {
         try {
             applicationRepository.deleteById(applicationIdx);

@@ -72,6 +72,7 @@ public class NoticeController {
     }
 
     // 공지사항 수정
+
     @PutMapping("/{noticeIdx}")
     public BaseResponse<NoticeResDto> modifyNotice(@PathVariable("noticeIdx") int noticeIdx, @RequestBody NoticeReqDto noticeReqDto) throws BaseException{
         if(noticeReqDto.getTitle() == null){
