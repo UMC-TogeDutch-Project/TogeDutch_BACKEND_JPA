@@ -15,6 +15,7 @@ public class ApplicationReqDto {
     private int postIdx;
     private int userIdx;
 
+
     @Builder
     public ApplicationReqDto(int postIdx, int userIdx) {
         this.postIdx = postIdx;

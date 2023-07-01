@@ -2,6 +2,7 @@ package com.proj.togedutch.dto;
 
 
 import com.proj.togedutch.domain.ChatRoom;
+import com.proj.togedutch.repository.ApplicationRepository;
 import com.proj.togedutch.repository.ChatRoomRepository;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -30,4 +31,10 @@ public class ChatRoomDto {
                 .createdAt(createdAt)
                 .build();
     }
+    public ChatRoomDto(ApplicationRepository.BelongChatRoom chatRoom) {
+        this.chatRoomIdx = chatRoom.getChatRoom_id();
+        this.createdAt = chatRoom.getCreated_at();
+    }
+
+
 }

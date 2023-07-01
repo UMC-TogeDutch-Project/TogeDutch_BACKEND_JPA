@@ -1,7 +1,6 @@
 package com.proj.togedutch.dto;
-
-
 import com.proj.togedutch.domain.Application;
+
 import lombok.Data;
 
 @Data
