@@ -178,12 +178,11 @@ public class ApplicationService {
 
         //유저아이디 값이 어플리케이션에 없으면 에러
         try {
-            applicationRepository.findById(userIdx);
+            Optional<Application> application = applicationRepository.findById(userIdx);
         } catch (Exception e) {
             e.printStackTrace();
             throw new BaseException(NO_USER_ERROR);
         }
-
 
         try{
             String accept="수락완료";
@@ -213,31 +212,32 @@ public class ApplicationService {
             throw new BaseException(DATABASE_ERROR);
         }
     }
-//
-//     //채팅방 삭제 후 Application의 chatRoom_id로 null로 변경
-//    public int modifyApplicationByChatRoomId(int chatRoomIdx) throws BaseException {
-//        try {
-//            //int result = applicationRepository.modifyApplicationByChatRoomId(chatRoomIdx);
-//
-//
-//            Optional<Application> application = applicationRepository.findById(chatRoomIdx);
-//
-//            application.get().modifyChatRoomStatus();
-//
-//            applicationRepository.save(application);
-//
-//            return result;
-//        } catch (BaseException e) {
-//            throw new BaseException(DATABASE_ERROR);
-//        }
-//    }
+
+     //채팅방 삭제 후 Application의 chatRoom_id로 null로 변경
+    public int modifyApplicationByChatRoomId(int chatRoomIdx) throws BaseException {
+        try {
+            int result;
+            Optional<Application> application = applicationRepository.findById(chatRoomIdx);
+            application.get().modifyChatRoomStatus();
+            applicationRepository.save(application.orElseThrow());
+
+            if(application.get().getChatRoomIdx()!=Integer.parseInt(null))
+                throw new BaseException(NOT_CHANGED_STATUS);
+            else
+                result=1;
+
+            return result;
+        } catch (BaseException e) {
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
 
 
-//    public List<ApplicationWaiting> getApplicationWaitings(int userIdx) throws BaseException {
-//        List<ApplicationWaiting> getApplicationWaitings;
+//    public List<ApplicationWaitingResDto> getApplicationWaitings(int userIdx) throws BaseException {
+//        List<ApplicationWaitingResDto> getApplicationWaitings;
 //
 //        try {
-//            getApplicationWaitings = applicationDao.getApplicationWaitings(userIdx);
+//            getApplicationWaitings = applicationRepository.getApplicationWaitings(userIdx);
 //        } catch (BaseException e) {
 //            throw new BaseException(DATABASE_ERROR);
 //        }
@@ -247,6 +247,17 @@ public class ApplicationService {
 //
 //        return getApplicationWaitings;
 //    }
+
+
+    // 공지사항 삭제
+    public int deleteApplication(int applicationIdx) throws BaseException {
+        try {
+            applicationRepository.deleteById(applicationIdx);
+            return 1;
+        } catch (Exception e) {
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
 
 
 }

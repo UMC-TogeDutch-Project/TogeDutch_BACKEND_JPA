@@ -65,6 +65,7 @@ public class Application {
     }
 
     public void modifyChatRoomStatus(){
+
         this.chatRoomIdx = Integer.parseInt(null);
     }
 
