@@ -83,6 +83,7 @@ public class ApplicationController {
     public BaseResponse<List<ApplicationResDto>> getApplicationByJoinUserId(@PathVariable("userIdx") int userIdx) throws BaseException {
         try {
             List<ApplicationResDto> getApplication = applicationService.getApplicationByJoinUserId(userIdx);
+
             return new BaseResponse<>(getApplication);
         } catch(BaseException e) {
             return new BaseResponse<>(e.getStatus());
@@ -145,12 +146,26 @@ public class ApplicationController {
 //
 
 //    @GetMapping("/application/waiting/{userIdx}")
-//    public BaseResponse<List<ApplicationWaiting>> getApplicationWaitings(@PathVariable int userIdx) throws BaseException {
+//    public BaseResponse<List<ApplicationWaitingResDto>> getApplicationWaitings(@PathVariable int userIdx) throws BaseException {
 //        try{
-//            List<ApplicationWaiting> getApplicationWaitings = applicationService.getApplicationWaitings(userIdx);
+//            List<ApplicationWaitingResDto> getApplicationWaitings = applicationService.getApplicationWaitings(userIdx);
 //            return new BaseResponse<>(getApplicationWaitings);
 //        } catch (BaseException e) {
 //            return new BaseResponse<>(e.getStatus());
 //        }
 //    }
+
+    // 신청 삭제
+    @DeleteMapping("/application/{applicationIdx}")
+    public int deleteApplication(@PathVariable("applicationIdx") int applicationIdx) throws BaseException {
+        try{
+            int deleteApplication = applicationService.deleteApplication(applicationIdx);
+            return deleteApplication;
+        } catch (BaseException e) {
+            return new BaseResponse<>(e.getStatus()).getCode();
+        }
+    }
+
+
+
 }

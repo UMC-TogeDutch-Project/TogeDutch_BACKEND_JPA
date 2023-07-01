@@ -110,6 +110,9 @@ public enum BaseResponseStatus {
     // [GET] /post
     NOT_FOUND_POST(false, 3040, "일치하는 조건의 공고가 없습니다."),
 
+    NOT_CHANGED_STATUS(false, 3050, "chatRoom_id가 널값으로 변경 되지 않았습니다."),
+
+
 
 
     /**
