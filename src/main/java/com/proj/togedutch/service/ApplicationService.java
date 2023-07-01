@@ -233,4 +233,20 @@ public class ApplicationService {
 //    }
 
 
+//    public List<ApplicationWaiting> getApplicationWaitings(int userIdx) throws BaseException {
+//        List<ApplicationWaiting> getApplicationWaitings;
+//
+//        try {
+//            getApplicationWaitings = applicationDao.getApplicationWaitings(userIdx);
+//        } catch (BaseException e) {
+//            throw new BaseException(DATABASE_ERROR);
+//        }
+//
+//        if (getApplicationWaitings.isEmpty())
+//            throw new BaseException(NOBODY_WAITING);
+//
+//        return getApplicationWaitings;
+//    }
+
+
 }
