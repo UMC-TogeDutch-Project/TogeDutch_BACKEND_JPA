@@ -26,7 +26,7 @@ public class ChatRoomService {
         List<ChatRoom> chatRoomList= chatRoomRepository.findAll();
         // ChatRoom List를 Dto List로 변환 후 return
         return chatRoomList.stream()
-                .map(m-> new ChatRoomDto(m.getChatRoomIdx(), m.getCreatedAt()))
+                .map(m-> new ChatRoomDto(m))
                 .collect(Collectors.toList());
     }
 
