@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.DynamicInsert;
 
 import javax.persistence.*;
@@ -20,6 +21,7 @@ public class ChatRoom {
     @Column(name="chatRoom_id")
     private int chatRoomIdx;
     @Column(name="created_at")
+    @CreationTimestamp
     private Timestamp createdAt;
 
     @Builder

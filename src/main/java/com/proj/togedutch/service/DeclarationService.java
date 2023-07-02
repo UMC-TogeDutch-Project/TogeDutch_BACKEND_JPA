@@ -1,7 +1,6 @@
 package com.proj.togedutch.service;
 
 import com.proj.togedutch.domain.Declaration;
-import com.proj.togedutch.dto.ChatRoomDto;
 import com.proj.togedutch.dto.DeclarationReqDto;
 import com.proj.togedutch.dto.DeclarationResDto;
 import com.proj.togedutch.repository.DeclarationRepository;
