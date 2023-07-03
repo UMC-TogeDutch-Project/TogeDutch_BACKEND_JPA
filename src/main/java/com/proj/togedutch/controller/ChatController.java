@@ -8,6 +8,8 @@ import com.proj.togedutch.dto.ChatMessageDto;
 import com.proj.togedutch.dto.ChatPhotoDto;
 import com.proj.togedutch.service.AWSS3Service;
 import com.proj.togedutch.service.ChatService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
@@ -20,6 +22,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/jpa/chatRoom/{chatRoom_id}")
+@Api(tags = {"채팅 API"})
 public class ChatController {
     private final ChatService chatService;
     private final AWSS3Service awsS3Service;
@@ -28,6 +31,7 @@ public class ChatController {
 
     //채팅 내용 가져오기
     @GetMapping("/conversation")
+    @ApiOperation(value = "채팅 내용 조회", notes = "채팅방에 내용을 전체 조회합니다.")
     public BaseResponse<List<ChatMessageDto>> getChatMessages(@PathVariable("chatRoom_id") int chatRoomId) throws BaseException {
         try{
             List<ChatMessageDto> chatMessages = chatService.getChatMessages(chatRoomId);

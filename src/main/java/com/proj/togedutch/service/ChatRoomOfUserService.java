@@ -23,9 +23,6 @@ public class ChatRoomOfUserService {
 
     @Transactional
     public int inviteUser(ChatRoomOfUserResDto chatRoomOfUserResDto,int chatRoom_id,int user_id) throws BaseException {
-//        chatRoomOfUserResDto.setChatRoom_id(chatRoom_id);
-//        chatRoomOfUserResDto.setUser_id(user_id);
-//        return (chatRoomOfUserRepository.save(chatRoomOfUserResDto.toEntity()).getChatRoomIdx());
         try {
             chatRoomOfUserResDto.setChatRoom_id(chatRoom_id);
             chatRoomOfUserResDto.setUser_id(user_id);
@@ -53,7 +50,7 @@ public class ChatRoomOfUserService {
 
     // 현재 채팅방에 있는 모든 유저
     public List<ChatRoomOfUserResDto> getChatRoomOfUsers(int chatRoomIdx){
-        List<ChatRoomOfUser> chatRoomOfUsers = chatRoomOfUserRepository.findAll();
+        List<ChatRoomOfUser> chatRoomOfUsers = chatRoomOfUserRepository.findByChatRoomIdx(chatRoomIdx);
         return chatRoomOfUsers.stream()
                 .map(m-> new ChatRoomOfUserResDto(m.getChatRoomIdx(), m.getUserIdx(),m.getStatus(),m.getIs_read(),m.getUpdated_at()))
                 .collect(Collectors.toList());
@@ -86,15 +83,15 @@ public class ChatRoomOfUserService {
             throw new BaseException(BaseResponseStatus.DATABASE_ERROR);
         }
     }
-//
-//    public ChatRoomUser getChatRoomUser(int chatRoomIdx, int userId) throws BaseException {
-//        try {
-//            // Retrieve the ChatRoomUser entity by chatRoomIdx and userId
-//            return chatRoomOfUserRepository.findByChatRoomIdxAndUserId(chatRoomIdx, userId)
-//                    .orElseThrow(() -> new BaseException(DATABASE_ERROR));
-//        } catch (Exception e) {
-//            throw new BaseException(BaseResponseStatus.DATABASE_ERROR);
-//        }
-//    }
-//    private List<ChatRoomOfUserResDto> convertToChatRoomOfUserResDtoList(List<ChatRoomOfUser> chatRoomOf
+
+    @Transactional
+    public int unreadChatRoomUser(int chatRoomIdx,int userIdx) throws BaseException{
+        try{
+            ChatRoomOfUser chatRoomOfUser = chatRoomOfUserRepository.findByChatRoomIdxAndUserIdx(chatRoomIdx,userIdx);
+            int unreadCnt = chatRoomOfUser.getIs_read();
+            return unreadCnt;
+        } catch (Exception e){
+            throw new BaseException(BaseResponseStatus.DATABASE_ERROR);
+        }
+    }
 }
