@@ -16,6 +16,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -31,6 +32,7 @@ public class ChatService {
     // 채팅 메세지 전체 조회
     public List<ChatMessageDto> getChatMessages (int chatRoomIdx) throws BaseException {
         List<ChatMessage> chatMessages = chatMessageRepository.findByChatRoomId(chatRoomIdx);
+        Collections.sort(chatMessages, (message1, message2) -> message2.getCreateAt().compareTo(message1.getCreateAt()));
         return chatMessages.stream()
                 .map(m->new ChatMessageDto(m))
                 .collect(Collectors.toList());

@@ -24,7 +24,7 @@ public class ChatRoomOfUserController {
 
     // 채팅방에 유저 입장 - post
     @PostMapping("/{chatRoom_id}/user/{user_id}")
-    @ApiOperation(value = "채팅유저확인 post")
+    @ApiOperation(value = "채팅유저확인 post",notes = "채팅방에 유저가 초대 됩니다.")
     public BaseResponse<ChatRoomOfUserResDto> createChatRoomOfUser(@PathVariable("chatRoom_id") int chatRoom_id, @PathVariable("user_id") int user_id){
         try{
             ChatRoomOfUserResDto chatRoomOfUserResDto = new ChatRoomOfUserResDto();
@@ -42,7 +42,7 @@ public class ChatRoomOfUserController {
         return new BaseResponse<>(chatRoomOfUserService.getChatRoomOfUsers(chatRoom_id));
     }
 
-    // 현재 채팅방안에서 채팅을 보는중
+    // 현재 채팅방안에서 채팅을 보는 상태
     @PutMapping("/{chatRoom_id}/user/{user_id}/in")
     public BaseResponse<ChatRoomOfUserResDto> inChatRoomUser(@PathVariable("chatRoom_id") int chatRoomIdx, @PathVariable("user_id") int userId){
         try {
@@ -53,7 +53,7 @@ public class ChatRoomOfUserController {
         }
     }
 
-    //현재 채팅방에 없는 경우
+    //현재 채팅방에 없는 상태
     @PutMapping("/{chatRoom_id}/user/{user_id}/out")
     public BaseResponse<ChatRoomOfUserResDto> outChatRoomUser(@PathVariable("chatRoom_id") int chatRoomIdx, @PathVariable("user_id") int userId){
         try {
@@ -64,12 +64,24 @@ public class ChatRoomOfUserController {
         }
     }
 
+    // 채팅방에서 나가기
     @DeleteMapping("/{chatRoom_id}/user/{user_id}/leave")
     public BaseResponse<Integer> leaveChatRoomUser(@PathVariable("chatRoom_id") int chatRoomIdx, @PathVariable("user_id") int userId){
         try{
             int chatRoomUser = chatRoomOfUserService.leaveChatRoomUser(chatRoomIdx,userId);
             return new BaseResponse<>(chatRoomUser);
         } catch (BaseException e){
+            return new BaseResponse<>(e.getStatus());
+        }
+    }
+
+    // 채팅방 읽지않은 메세지 수 출력
+    @GetMapping("/{chatRoom_id}/user/{user_id}/unread")
+    public BaseResponse<Integer> unreadChatRoomUser(@PathVariable("chatRoom_id") int chatRoomIdx, @PathVariable("user_id") int userIdx){
+        try{
+            int unreadCnt = chatRoomOfUserService.unreadChatRoomUser(chatRoomIdx,userIdx);
+            return new BaseResponse<>(unreadCnt);
+        }catch (BaseException e){
             return new BaseResponse<>(e.getStatus());
         }
     }
