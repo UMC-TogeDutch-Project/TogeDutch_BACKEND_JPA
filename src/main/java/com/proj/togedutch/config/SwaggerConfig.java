@@ -58,12 +58,24 @@ public class SwaggerConfig {
     @Bean
     public Docket chatRoomAPI() {
         return getDocket("채팅방", Predicates.or(
-                PathSelectors.regex("/chatRoom.*")));
+                PathSelectors.regex("/jpa/chatRoom.*")));
     }
 
     @Bean
     public Docket chatAPI() {
         return getDocket("채팅", Predicates.or(
                 PathSelectors.ant("/chatRoom/{chatRoom_id}.*")));
+    }
+
+    @Bean
+    public Docket adAPI() {
+        return getDocket("광고", Predicates.or(
+                PathSelectors.regex("/ad.*")));
+    }
+
+    @Bean
+    public Docket kakaoPayAPI() {
+        return getDocket("카카오페이", Predicates.or(
+                PathSelectors.regex("/payment.*")));
     }
 }
