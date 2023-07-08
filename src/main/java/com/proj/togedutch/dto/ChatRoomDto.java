@@ -4,6 +4,7 @@ package com.proj.togedutch.dto;
 import com.proj.togedutch.domain.ChatRoom;
 import com.proj.togedutch.repository.ApplicationRepository;
 import com.proj.togedutch.repository.ChatRoomRepository;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -15,7 +16,9 @@ import java.sql.Timestamp;
 @AllArgsConstructor
 @Data
 public class ChatRoomDto {
+    @ApiModelProperty(example = "채팅방 생성시 부여된 id")
     private int chatRoomIdx;
+    @ApiModelProperty(example = "최초 작성 시간")
     private Timestamp createdAt;
 
     // Entity to Dto
