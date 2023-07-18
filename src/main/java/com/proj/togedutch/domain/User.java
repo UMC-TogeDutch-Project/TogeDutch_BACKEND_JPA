@@ -100,4 +100,11 @@ public class User {
         this.latitude = latitude;
         this.longitude = longitude;
     }
+
+    public User(int keywordIdx, String email, Double latitude, Double longitude) {
+        this.keywordIdx = keywordIdx;
+        this.email = email;
+        this.latitude = latitude;
+        this.longitude = longitude;
+    }
 }
