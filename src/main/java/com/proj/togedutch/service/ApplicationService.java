@@ -126,16 +126,10 @@ public class ApplicationService {
                 .collect(Collectors.toList());
     }
 
-    //채팅방 전체 조회 (내가 참여)
+    //채팅방 전체 조회 (내가 업로드 + 내가 참여)
     public List<ChatRoomDto> getChatRoomByJoinUserId(int userIdx) throws BaseException {
-
-        //유저아이디 값이 어플리케이션에 없으면 에러
-        Optional<Application> application = applicationRepository.findById(userIdx);
-        if(application.isEmpty())
-            throw new BaseException(NO_USER_ERROR);
-
         String accept = "수락완료";
-        List<ApplicationRepository.BelongChatRoom> joinChatRoom = applicationRepository.findChatRoomByJoinUserId(userIdx,userIdx,accept);
+        List<ApplicationRepository.BelongChatRoom> joinChatRoom = applicationRepository.findChatRoomByJoinUserId(userIdx, userIdx, accept);
 
         return joinChatRoom.stream()
                 .map(m->new ChatRoomDto(m))
@@ -165,21 +159,16 @@ public class ApplicationService {
         applicationRepository.save(application);
     }
 
+    // 내가 업로드한 공고 status 수락 대기 or 랜덤 매칭 대기인 [ Application + 공고제목 + 신청자 ]
+    public List<ApplicationWaitingResDto> getApplicationWaitings(int userIdx) throws BaseException {
+        List<ApplicationRepository.ApplicationWaiting> getApplicationWaitings = applicationRepository.getApplicationWaitings(userIdx);
+        if (getApplicationWaitings.isEmpty())
+            throw new BaseException(NOBODY_WAITING);
 
-//    public List<ApplicationWaitingResDto> getApplicationWaitings(int userIdx) throws BaseException {
-//        List<ApplicationWaitingResDto> getApplicationWaitings;
-//
-//        try {
-//            getApplicationWaitings = applicationRepository.getApplicationWaitings(userIdx);
-//        } catch (BaseException e) {
-//            throw new BaseException(DATABASE_ERROR);
-//        }
-//
-//        if (getApplicationWaitings.isEmpty())
-//            throw new BaseException(NOBODY_WAITING);
-//
-//        return getApplicationWaitings;
-//    }
+        return getApplicationWaitings.stream()
+                .map(m->new ApplicationWaitingResDto(m))
+                .collect(Collectors.toList());
+    }
 
 
     // 신청 삭제
@@ -191,6 +180,4 @@ public class ApplicationService {
             throw new BaseException(DATABASE_ERROR);
         }
     }
-
-
 }
