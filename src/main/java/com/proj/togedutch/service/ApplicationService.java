@@ -14,7 +14,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import com.proj.togedutch.utils.JwtService;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -33,6 +35,7 @@ public class ApplicationService {
 
 
     // 공고 신청
+    @Transactional(rollbackFor = SQLException.class)
     public ApplicationResDto applyPost(int postIdx) throws BaseException {
         int userIdx = jwtService.getUserIdx();;
         Optional<Post> getPost = postRepository.findById(postIdx);
@@ -60,6 +63,7 @@ public class ApplicationService {
     }
 
     //신청 수락
+    @Transactional(rollbackFor = SQLException.class)
     public ApplicationResDto modifyStatus(int applicationIdx) throws BaseException {
         Optional<Application> checkDuplicated = applicationRepository.findById(applicationIdx);
 
@@ -86,6 +90,7 @@ public class ApplicationService {
 
 
     //신청 거절
+    @Transactional(rollbackFor = SQLException.class)
     public ApplicationResDto modifyStatus_deny(int applicationIdx) throws BaseException {
         Optional<Application> checkDuplicated = applicationRepository.findById(applicationIdx);
 
@@ -137,6 +142,7 @@ public class ApplicationService {
     }
 
     //공고 상태 변경
+    @Transactional(rollbackFor = SQLException.class)
     public PostResDto modifyPostStatusById(int postIdx) throws BaseException {
         Optional<Post> getPost = postRepository.findById(postIdx);
         if(getPost.isEmpty())
@@ -149,6 +155,7 @@ public class ApplicationService {
     }
 
      //채팅방 삭제 후 Application의 chatRoom_id로 null로 변경
+     @Transactional(rollbackFor = SQLException.class)
     public void modifyApplicationByChatRoomId(int chatRoomIdx) throws BaseException {
         Optional<Application> getApplication = applicationRepository.findById(chatRoomIdx);
         if(getApplication.isEmpty())
@@ -172,6 +179,7 @@ public class ApplicationService {
 
 
     // 신청 삭제
+    @Transactional(rollbackFor = SQLException.class)
     public int deleteApplication(int applicationIdx) throws BaseException {
         try {
             applicationRepository.deleteById(applicationIdx);
