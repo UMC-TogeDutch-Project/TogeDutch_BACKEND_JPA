@@ -11,7 +11,6 @@ import org.hibernate.annotations.DynamicUpdate;
 import javax.persistence.*;
 
 @Getter
-@Setter
 @NoArgsConstructor
 @Entity
 @DynamicInsert
@@ -34,23 +33,13 @@ public class Application {
     private int uploaderIdx;
 
     @Column(name="ChatRoom_chatRoom_id")
-    private int chatRoomIdx;
+    private Integer chatRoomIdx;
 
     // 공고를 신청한 유저의 id
     @Column(name="User_user_id")
     private int userIdx;
 
-
-
     @Builder
-    public Application(int applicationIdx, String status, int postIdx, int userIdx, int chatRoomIdx) {
-        this.applicationIdx = applicationIdx;
-        this.status = status;
-        this.postIdx = postIdx;
-        this.userIdx = userIdx;
-        this.chatRoomIdx = chatRoomIdx;
-    }
-
     public Application(String status, int postIdx, int uploaderIdx, int chatRoomIdx, int userIdx) {
         this.status = status;
         this.postIdx = postIdx;
@@ -61,12 +50,11 @@ public class Application {
 
 
     public void modifyApplication(String status){
-        this.status=status;
+        this.status = status;
     }
 
     public void modifyChatRoomStatus(){
-
-        this.chatRoomIdx = Integer.parseInt(null);
+        this.chatRoomIdx = null;
     }
 
 }

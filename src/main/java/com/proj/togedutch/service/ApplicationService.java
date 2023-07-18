@@ -34,219 +34,141 @@ public class ApplicationService {
 
     // 공고 신청
     public ApplicationResDto applyPost(int postIdx) throws BaseException {
-        int userIdx;
-        Optional<Post> getPost;
-        Application checkDuplicated;
-        // userIdx와 post_id가 같으면 내가 올린 공고임
-        try {
-            getPost = postRepository.findById(postIdx);
-            userIdx = jwtService.getUserIdx();
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw new BaseException(DATABASE_ERROR);
-        }
+        int userIdx = jwtService.getUserIdx();;
+        Optional<Post> getPost = postRepository.findById(postIdx);
 
+        // 공고 신청자와 공고 작성자가 같은 경우
         if (userIdx == getPost.get().getUserIdx())
             throw new BaseException(POST_UPLOAD_MINE);
 
-        // userIdx랑 post_id가 같은 application이 있는지 체크 이미 있으면 이미 신청한 공고임
-        try {
-            checkDuplicated = applicationRepository.findByApplicationIdxAndUserIdx(userIdx, postIdx);
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw new BaseException(DATABASE_ERROR);
-        }
+        // 해당 공고에 userIdx가 신청한 적이 있는지 검사
+        Optional<Application> checkDuplicated = applicationRepository.findByApplicationIdxAndUserIdx(userIdx, postIdx);
+
         // 값이 없었으면 아직 신청을 안 한것이므로!!
-        if (checkDuplicated != null)
+        if (checkDuplicated.isPresent())
             throw new BaseException(DUPLICATED_APPLICATION);
 
-        try {
-            Application application = new Application();
-            application.setPostIdx(postIdx); // entity에있는 setter사용
-            application.setUserIdx(userIdx);
-            application.setChatRoomIdx(getPost.get().getChatRoomIdx());
-            application.setUploaderIdx(getPost.get().getUserIdx());
+        Post post = getPost.get();
+        Application application = Application.builder()
+                .postIdx(postIdx)
+                .uploaderIdx(post.getUserIdx())
+                .userIdx(userIdx)
+                .chatRoomIdx(post.getChatRoomIdx())
+                .build();
 
-            Application save = applicationRepository.save(application);
-
-            ApplicationResDto createApplication = new ApplicationResDto(save);
-            return createApplication;
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw new BaseException(DATABASE_ERROR);
-        }
+        return new ApplicationResDto(applicationRepository.save(application));
     }
-
-
-
-    /**-------------------------------------------------------------*/
 
     //신청 수락
     public ApplicationResDto modifyStatus(int applicationIdx) throws BaseException {
+        Optional<Application> checkDuplicated = applicationRepository.findById(applicationIdx);
 
-        try {
-            Application checkDuplicated = applicationRepository.findById(applicationIdx).orElseThrow();
-            String status = checkDuplicated.getStatus();
-
-            if (status.equals("모집완료"))
-                throw new BaseException(COMPLETED_STATUS);
-
-            if (status.equals("수락완료"))
-                throw new BaseException(ACCEPT_STATUS);
-
-            if (status.equals("수락거절"))
-                throw new BaseException(REJECTD_STATUS);
-
-            String accept="수락완료";
-            checkDuplicated.modifyApplication(accept);
-
-            applicationRepository.save(checkDuplicated);
-
-            return new ApplicationResDto(checkDuplicated);
-        } catch (BaseException be) {
-            throw be;
-        } catch (Exception e) {
+        if(checkDuplicated.isEmpty())
             throw new BaseException(MODIFY_FAIL_USER);
-        }
+
+        Application application = checkDuplicated.get();
+        String status = checkDuplicated.get().getStatus();
+
+        if (status.equals("모집완료"))
+            throw new BaseException(COMPLETED_STATUS);
+
+        if (status.equals("수락완료"))
+            throw new BaseException(ACCEPT_STATUS);
+
+        if (status.equals("수락거절"))
+            throw new BaseException(REJECTD_STATUS);
+
+        String accept = "수락완료";
+        application.modifyApplication(accept);
+
+        return new ApplicationResDto(applicationRepository.save(application));
     }
 
 
     //신청 거절
     public ApplicationResDto modifyStatus_deny(int applicationIdx) throws BaseException {
-        try {
-            Application checkDuplicated = applicationRepository.findById(applicationIdx).orElseThrow();
-            String status = checkDuplicated.getStatus();
+        Optional<Application> checkDuplicated = applicationRepository.findById(applicationIdx);
 
-            if (status.equals("모집완료"))
-                throw new BaseException(COMPLETED_STATUS);
-
-            if (status.equals("수락완료"))
-                throw new BaseException(ACCEPT_STATUS);
-
-            if (status.equals("수락거절"))
-                throw new BaseException(REJECTD_STATUS);
-
-            String accept="수락거절";
-            checkDuplicated.modifyApplication(accept);
-            applicationRepository.save(checkDuplicated);
-
-            return new ApplicationResDto(checkDuplicated);
-        }catch (BaseException be) {
-            throw be;
-        } catch (Exception e) {
+        if(checkDuplicated.isEmpty())
             throw new BaseException(MODIFY_FAIL_USER);
-        }
+
+        Application application = checkDuplicated.get();
+        String status = checkDuplicated.get().getStatus();
+
+        if (status.equals("모집완료"))
+            throw new BaseException(COMPLETED_STATUS);
+
+        if (status.equals("수락완료"))
+            throw new BaseException(ACCEPT_STATUS);
+
+        if (status.equals("수락거절"))
+            throw new BaseException(REJECTD_STATUS);
+
+        String accept = "수락거절";
+        application.modifyApplication(accept);
+
+        return new ApplicationResDto(applicationRepository.save(application));
     }
 
-    /**User_user_id*/
     //신청 상태 전체 조회 (내가 참여한 공고)
     public List<ApplicationResDto> getApplicationByJoinUserId(int userIdx) throws BaseException {
-        try {
-            List<Application> joinApplication = applicationRepository.findAllByUserIdx(userIdx);
-
-            List<ApplicationResDto> joinApplicationResDtos = new ArrayList<>();
-            for (int i = 0; i < joinApplication.size(); i++) {
-                joinApplicationResDtos.add(new ApplicationResDto(joinApplication.get(i)));
-            }
-
-            return joinApplicationResDtos;
-        } catch (Exception e) {
-            throw new BaseException(DATABASE_ERROR);
-        }
+        List<Application> joinApplication = applicationRepository.findAllByUserIdxOrderByApplicationIdxDesc(userIdx);
+        return joinApplication.stream()
+                .map(m->new ApplicationResDto(m))
+                .collect(Collectors.toList());
     }
 
-    /**Post_User_user_id*/
     //신청 상태 전체 조회 (내가 업로드)
     public List<ApplicationResDto> getApplicationByUploadUserId(int userIdx) throws BaseException {
-        try {
-            List<Application> UploadApplication = applicationRepository.findAllByUploaderIdx(userIdx);
-
-            List<ApplicationResDto> applicationResDtos = new ArrayList<>();
-            for (int i = 0; i < UploadApplication.size(); i++) {
-                applicationResDtos.add(new ApplicationResDto(UploadApplication.get(i)));
-            }
-
-            return applicationResDtos;
-        } catch (Exception e) {
-            throw new BaseException(DATABASE_ERROR);
-        }
+        List<Application> uploadApplication = applicationRepository.findAllByUploaderIdxOrderByApplicationIdxDesc(userIdx);
+        return uploadApplication.stream()
+                .map(m->new ApplicationResDto(m))
+                .collect(Collectors.toList());
     }
 
-    //채팅방 전체 조회 (내가 참여)
+    //채팅방 전체 조회 (내가 업로드 + 내가 참여)
     public List<ChatRoomDto> getChatRoomByJoinUserId(int userIdx) throws BaseException {
+        String accept = "수락완료";
+        List<ApplicationRepository.BelongChatRoom> joinChatRoom = applicationRepository.findChatRoomByJoinUserId(userIdx, userIdx, accept);
 
-        //유저아이디 값이 어플리케이션에 없으면 에러
-        try {
-            Optional<Application> application = applicationRepository.findById(userIdx);
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw new BaseException(NO_USER_ERROR);
-        }
-
-        try{
-            String accept="수락완료";
-            List<ApplicationRepository.BelongChatRoom> joinChatRoom = applicationRepository.findChatRoomByJoinUserId(userIdx,userIdx,accept);
-
-            return joinChatRoom.stream()
+        return joinChatRoom.stream()
                 .map(m->new ChatRoomDto(m))
                 .collect(Collectors.toList());
-        }catch (Exception e){
-            throw new BaseException(DATABASE_ERROR);
-        }
     }
 
     //공고 상태 변경
     public PostResDto modifyPostStatusById(int postIdx) throws BaseException {
-        try {
-            Post modifyPostStatusById = postRepository.findById(postIdx).orElseThrow();
+        Optional<Post> getPost = postRepository.findById(postIdx);
+        if(getPost.isEmpty())
+            throw new BaseException(NOT_FOUND_POST);
 
-            String complete="수락완료";
-
-            modifyPostStatusById.modifyStatusPost(complete);
-
-            postRepository.save(modifyPostStatusById);
-
-            return new PostResDto(modifyPostStatusById);
-        } catch (Exception e) {
-            throw new BaseException(DATABASE_ERROR);
-        }
+        Post post = getPost.get();
+        String complete = "수락완료";
+        post.modifyStatusPost(complete);
+        return new PostResDto(postRepository.save(post));
     }
 
      //채팅방 삭제 후 Application의 chatRoom_id로 null로 변경
-    public int modifyApplicationByChatRoomId(int chatRoomIdx) throws BaseException {
-        try {
-            int result;
-            Optional<Application> application = applicationRepository.findById(chatRoomIdx);
-            application.get().modifyChatRoomStatus();
-            applicationRepository.save(application.orElseThrow());
+    public void modifyApplicationByChatRoomId(int chatRoomIdx) throws BaseException {
+        Optional<Application> getApplication = applicationRepository.findById(chatRoomIdx);
+        if(getApplication.isEmpty())
+            throw new BaseException(FOREIGN_KEY_ORROR);
 
-            if(application.get().getChatRoomIdx()!=Integer.parseInt(null))
-                throw new BaseException(NOT_CHANGED_STATUS);
-            else
-                result=1;
-
-            return result;
-        } catch (BaseException e) {
-            throw new BaseException(DATABASE_ERROR);
-        }
+        Application application = getApplication.get();
+        application.modifyChatRoomStatus();
+        applicationRepository.save(application);
     }
 
+    // 내가 업로드한 공고 status 수락 대기 or 랜덤 매칭 대기인 [ Application + 공고제목 + 신청자 ]
+    public List<ApplicationWaitingResDto> getApplicationWaitings(int userIdx) throws BaseException {
+        List<ApplicationRepository.ApplicationWaiting> getApplicationWaitings = applicationRepository.getApplicationWaitings(userIdx);
+        if (getApplicationWaitings.isEmpty())
+            throw new BaseException(NOBODY_WAITING);
 
-//    public List<ApplicationWaitingResDto> getApplicationWaitings(int userIdx) throws BaseException {
-//        List<ApplicationWaitingResDto> getApplicationWaitings;
-//
-//        try {
-//            getApplicationWaitings = applicationRepository.getApplicationWaitings(userIdx);
-//        } catch (BaseException e) {
-//            throw new BaseException(DATABASE_ERROR);
-//        }
-//
-//        if (getApplicationWaitings.isEmpty())
-//            throw new BaseException(NOBODY_WAITING);
-//
-//        return getApplicationWaitings;
-//    }
+        return getApplicationWaitings.stream()
+                .map(m->new ApplicationWaitingResDto(m))
+                .collect(Collectors.toList());
+    }
 
 
     // 신청 삭제
@@ -258,6 +180,4 @@ public class ApplicationService {
             throw new BaseException(DATABASE_ERROR);
         }
     }
-
-
 }

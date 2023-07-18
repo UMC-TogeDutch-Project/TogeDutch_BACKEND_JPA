@@ -4,6 +4,7 @@ import com.proj.togedutch.config.BaseException;
 import com.proj.togedutch.config.BaseResponse;
 import com.proj.togedutch.domain.ChatRoom;
 import com.proj.togedutch.dto.ChatRoomDto;
+import com.proj.togedutch.service.ApplicationService;
 import com.proj.togedutch.service.ChatRoomService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -20,6 +21,7 @@ import java.util.List;
 @Api(tags = {"채팅방 API"})
 public class ChatRoomController {
     private final ChatRoomService chatRoomService;
+    private final ApplicationService applicationService;
 
     // 채팅방 생성
     @PostMapping("")
@@ -51,7 +53,13 @@ public class ChatRoomController {
     @DeleteMapping("/{chatRoom_id}")
     @ApiOperation(value = "특정 채팅방 삭제", notes = "채팅방 id로 특정 채팅방을 삭제합니다.")
     @ApiImplicitParam(name = "chatRoom_id", value = "채팅방 생성시 발급되는 id")
-    public BaseResponse<Integer> deleteChatRoom (@PathVariable("chatRoom_id") int chatRoomIdx) {
+    public BaseResponse<Integer> deleteChatRoom (@PathVariable("chatRoom_id") int chatRoomIdx) throws BaseException {
+        try {
+            applicationService.modifyApplicationByChatRoomId(chatRoomIdx);
+        } catch(BaseException e) {
+            return new BaseResponse<>(e.getStatus());
+        }
+
         chatRoomService.deleteChatRoom(chatRoomIdx);
         return new BaseResponse<>(1);
     }

@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/jpa/matching")
+@RequestMapping("/matching")
 public class MatchingController {
     private final MatchingService matchingService;
 

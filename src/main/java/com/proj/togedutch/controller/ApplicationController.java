@@ -25,12 +25,10 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @RequestMapping("")
 public class ApplicationController {
-    final Logger logger= LoggerFactory.getLogger(this.getClass());
+    final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     private final ApplicationService applicationService;
     private final PostService postService;
-
-// jwt는 건들이지도 않았는데.. 왜?? 오류가
 
 
      //공고 신청
@@ -90,7 +88,6 @@ public class ApplicationController {
         }
     }
 
-    /**Post_User_user_id*/
     //신청 상태 전체 조회 (내가 업로드)
     @ResponseBody
     @GetMapping("/user/{userIdx}/application/upload")
@@ -102,8 +99,6 @@ public class ApplicationController {
             return new BaseResponse<>(e.getStatus());
         }
     }
-
-
 
     //채팅방 전체 조회 (내가 업로드 + 참여)
     @ResponseBody
@@ -121,7 +116,7 @@ public class ApplicationController {
     //공고 상태 변경
     @PutMapping("/application/post/status/{postIdx}")
     public BaseResponse<PostResDto> modifyPostStatusById(@PathVariable("postIdx") int postIdx) throws BaseException{
-        PostResDto modifyPost=postService.getPostById(postIdx);
+        PostResDto modifyPost = postService.getPostById(postIdx);
 
         int num_of_recruits = modifyPost.getNum_of_recruits();
         int recruited_num=modifyPost.getRecruited_num();
@@ -143,17 +138,17 @@ public class ApplicationController {
             return new BaseResponse<>(e.getStatus());
         }
     }
-//
 
-//    @GetMapping("/application/waiting/{userIdx}")
-//    public BaseResponse<List<ApplicationWaitingResDto>> getApplicationWaitings(@PathVariable int userIdx) throws BaseException {
-//        try{
-//            List<ApplicationWaitingResDto> getApplicationWaitings = applicationService.getApplicationWaitings(userIdx);
-//            return new BaseResponse<>(getApplicationWaitings);
-//        } catch (BaseException e) {
-//            return new BaseResponse<>(e.getStatus());
-//        }
-//    }
+    // 내가 업로드한 공고 status 수락 대기 or 랜덤 매칭 대기인 [ Application + 공고제목 + 신청자 ]
+    @GetMapping("/application/waiting/{userIdx}")
+    public BaseResponse<List<ApplicationWaitingResDto>> getApplicationWaitings(@PathVariable int userIdx) throws BaseException {
+        try{
+            List<ApplicationWaitingResDto> getApplicationWaitings = applicationService.getApplicationWaitings(userIdx);
+            return new BaseResponse<>(getApplicationWaitings);
+        } catch (BaseException e) {
+            return new BaseResponse<>(e.getStatus());
+        }
+    }
 
     // 신청 삭제
     @DeleteMapping("/application/{applicationIdx}")
@@ -165,7 +160,4 @@ public class ApplicationController {
             return new BaseResponse<>(e.getStatus()).getCode();
         }
     }
-
-
-
 }

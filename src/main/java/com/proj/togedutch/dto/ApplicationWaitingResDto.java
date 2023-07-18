@@ -1,6 +1,7 @@
 package com.proj.togedutch.dto;
 
 
+import com.proj.togedutch.repository.ApplicationRepository;
 import lombok.Data;
 
 @Data
@@ -14,14 +15,14 @@ public class ApplicationWaitingResDto {
     private String title;
     private String applicant;
 
-    public ApplicationWaitingResDto(int application_id, String status, int post_id, String uploader, int user_id, int chatRoom_id, String title, String applicant) {
-        this.application_id = application_id;
-        this.status = status;
-        this.post_id = post_id;
-        this.uploader = uploader;
-        this.user_id = user_id;
-        this.chatRoom_id = chatRoom_id;
-        this.title = title;
-        this.applicant = applicant;
+    public ApplicationWaitingResDto(ApplicationRepository.ApplicationWaiting applicationWaiting) {
+        this.application_id = applicationWaiting.getApplication_id();
+        this.status = applicationWaiting.getStatus();
+        this.post_id = applicationWaiting.getPost_id();
+        this.uploader = applicationWaiting.getUploader();
+        this.user_id = applicationWaiting.getUser_id();
+        this.chatRoom_id = applicationWaiting.getChatRoom_id();
+        this.title = applicationWaiting.getTitle();
+        this.applicant = applicationWaiting.getApplicant();
     }
 }
