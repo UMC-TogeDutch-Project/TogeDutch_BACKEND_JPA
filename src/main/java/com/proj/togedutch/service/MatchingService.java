@@ -121,7 +121,13 @@ public class MatchingService {
 
     public int getAcceptUserId(int userIdx,int postIdx) throws BaseException {
         Post post = postRepository.findById(postIdx).orElseThrow(IllegalStateException::new);
-        Application newApplication = new Application("매칭 성공", postIdx, post.getUserIdx(), post.getChatRoomIdx(), userIdx);
+        Application newApplication = Application.builder()
+                .status("매칭 성공")
+                .postIdx(postIdx)
+                .uploaderIdx(post.getUserIdx())
+                .chatRoomIdx(post.getChatRoomIdx())
+                .userIdx(userIdx)
+                .build();
         return applicationRepository.save(newApplication).getApplicationIdx();
     }
 }

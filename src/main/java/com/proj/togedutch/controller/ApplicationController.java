@@ -25,12 +25,10 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @RequestMapping("")
 public class ApplicationController {
-    final Logger logger= LoggerFactory.getLogger(this.getClass());
+    final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     private final ApplicationService applicationService;
     private final PostService postService;
-
-// jwt는 건들이지도 않았는데.. 왜?? 오류가
 
 
      //공고 신청
@@ -90,7 +88,6 @@ public class ApplicationController {
         }
     }
 
-    /**Post_User_user_id*/
     //신청 상태 전체 조회 (내가 업로드)
     @ResponseBody
     @GetMapping("/user/{userIdx}/application/upload")
@@ -102,8 +99,6 @@ public class ApplicationController {
             return new BaseResponse<>(e.getStatus());
         }
     }
-
-
 
     //채팅방 전체 조회 (내가 업로드 + 참여)
     @ResponseBody

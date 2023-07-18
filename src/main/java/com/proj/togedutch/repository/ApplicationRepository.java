@@ -12,17 +12,18 @@ import org.springframework.stereotype.Repository;
 
 import java.sql.Timestamp;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface ApplicationRepository extends JpaRepository<Application, Integer> {
-    Application findByApplicationIdxAndUserIdx(int postIdx, int userIdx);
+    Optional<Application> findByApplicationIdxAndUserIdx(int postIdx, int userIdx);
 
-    /**Post_User_user_id=UploaderIdx 내가 업로드한*/
-    /**User_user_id =UserIdx 내가 참여한*/
+    /** Post_User_user_id=UploaderIdx 내가 업로드한 **/
+    /** User_user_id =UserIdx 내가 참여한 **/
 
-    List<Application> findAllByUploaderIdx(int userIdx);
+    List<Application> findAllByUploaderIdxOrderByApplicationIdxDesc(int userIdx);
 
-    List<Application> findAllByUserIdx(int userIdx);
+    List<Application> findAllByUserIdxOrderByApplicationIdxDesc(int userIdx);
 
 
 
