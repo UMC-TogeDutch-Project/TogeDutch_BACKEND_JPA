@@ -16,7 +16,7 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/jpa/chatRoom")
+@RequestMapping("/chatRoom")
 @Api(tags = {"신고 API"})
 public class DeclarationController {
     private final DeclarationService declarationService;

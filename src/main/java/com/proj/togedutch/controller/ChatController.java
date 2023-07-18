@@ -21,7 +21,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/jpa/chatRoom/{chatRoom_id}")
+@RequestMapping("/chatRoom/{chatRoom_id}")
 @Api(tags = {"채팅 API"})
 public class ChatController {
     private final ChatService chatService;
