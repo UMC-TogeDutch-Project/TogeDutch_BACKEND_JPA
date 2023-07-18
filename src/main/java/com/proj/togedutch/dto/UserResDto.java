@@ -62,6 +62,13 @@ public class UserResDto {
         this.longitude = longitude;
     }
 
+    public UserResDto(int userIdx, int keywordIdx, String email, Double latitude, Double longitude) {
+        this.userIdx = userIdx;
+        this.keywordIdx = keywordIdx;
+        this.email = email;
+        this.latitude = latitude;
+        this.longitude = longitude;
+    }
 
     // ASCII TO String
     public String imageConvert(String image) {
